@@ -1,0 +1,45 @@
+{
+  "name": "@safeheron/api-sdk",
+  "version": "1.0.0",
+  "description": "Javascript & Typescript SDK for Safeheron API",
+  "main": "./lib/safeheron.js",
+  "types": "./lib/safeheron.d.ts",
+  "scripts": {
+    "build": "rm -rf ./lib && tsc",
+    "test": "jest",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Safeheron/safeheron-api-sdk-js.git"
+  },
+  "keywords": [
+    "safeheron",
+    "api",
+    "sdk",
+    "js"
+  ],
+  "author": "xigaoku<xigaoku@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/Safeheron/safeheron-api-sdk-js",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "crypto": "^1.0.1",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.6",
+    "@types/rc": "^1.2.1",
+    "ethers": "^5.7.0",
+    "prettier": "^2.7.1",
+    "rc": "^1.2.8",
+    "ts-jest": "^28.0.8",
+    "ts-node": "^10.9.1",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0"
+  },
+  "files": [
+    "lib/**/*"
+  ]
+}

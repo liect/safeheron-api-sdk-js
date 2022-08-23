@@ -1,0 +1,8 @@
+# your api key
+APIKEY=
+# path to your private key file, pem encoded
+PRIVATE_KEY_PEM_FILE=
+# path to safeheron api public key file, pem encoded
+APIKEY_PUBLIC_KEY_PEM_FILE=
+# Safheron api url
+BASE_URL=

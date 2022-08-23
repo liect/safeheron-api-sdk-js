@@ -1,0 +1,8 @@
+# Your address
+ACCOUNT_ADDRESS=
+# Your private key
+ACCOUNT_PRIVATE_KEY=
+# Target address
+TO_ADDRESS=
+# Contract address
+ERC20_CONTRACT_ADDRESS=
