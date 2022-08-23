@@ -1,6 +1,0 @@
-lib
-node_modules
-.vscode
-.idea
-demo/api_demo/.safeheronrc
-demo/mpc_demo/.mpcdemorc
