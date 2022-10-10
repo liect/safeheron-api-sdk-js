@@ -15,7 +15,7 @@ const safeheronConfigRC = rc('safeheron', defaults)
 function getConfigValue(key: string) {
   const value = safeheronConfigRC[key];
   if (!value) {
-    throw new Error(`Missing config entry for '${key}'`);
+    throw new Error(`missing config entry for '${key}'`);
   }
   return value;
 }
@@ -29,7 +29,7 @@ const client: SafeheronClient = new SafeheronClient({
   apiKey,
   rsaPrivateKey: yourPrivateKey,
   safeheronRsaPublicKey: apiKeyPublicKey,
-  requestTimeout: 3000,
+  requestTimeout: 10000,
 });
 
 interface CreateAccountRequest {
@@ -45,25 +45,56 @@ interface CreateAccountResponse {
   }>;
 }
 
+// Create a new wallet account.
+async function createAccount(accountName: string): Promise<CreateAccountResponse> {
 
-const uri = '/v1/account/create';
+  const request: CreateAccountRequest = {
+    accountName,
+  };
 
-const request: CreateAccountRequest = {
-  accountName: 'first_account',
-};
+  return await client.doRequest<CreateAccountRequest, CreateAccountResponse>('/v1/account/create', request);
+}
 
-async function main(){
+interface AddCoinRequest {
+  coinKey: string;
+  accountKey: string;
+}
+
+interface AddCoinResponse {
+  [index: number]: {
+    address: string;
+    addressType: string;
+    amlLock: string;
+  }
+}
+
+// Add Coins to a Wallet Account
+async function addCoin(coinKey: string, accountKey: string): Promise<AddCoinResponse> {
+
+  const request: AddCoinRequest = {
+    coinKey,
+    accountKey,
+  };
+
+  return await client.doRequest<AddCoinRequest, AddCoinResponse>('/v1/account/coin/create', request);
+}
+
+async function main() {
   try {
-    const createAccountResponse = await client.doRequest<CreateAccountRequest, CreateAccountResponse>(uri, request);
-    console.log(createAccountResponse);
+    const accountResult = await createAccount('first-wallet-account');
+    console.log(`Account key: ${accountResult.accountKey}`);
+
+    const coinResult = await addCoin("ETH_GOERLI", accountResult.accountKey);
+    console.log(`Token[ETH_GOERLI] address: ${coinResult[0].address}`);
   } catch (e) {
-    if(e instanceof SafeheronError){
-      console.log(`${e.code}:${e.message}`);
-    }else {
+    if (e instanceof SafeheronError) {
+      console.error(`failed, error code:${e.code}, message:${e.message}`);
+    } else {
       console.error(e)
     }
   }
 }
+
 
 main()
 

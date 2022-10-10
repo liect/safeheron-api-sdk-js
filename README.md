@@ -62,7 +62,7 @@ yarn add @safeheron/api-sdk
   ```
 
 # Test
-## api test
+## Test Create Wallet Account
 * Before run the test code, modify `demo/api_demo/.safeheronrc.dist` according to the comments
   ```ini
   # your api key
@@ -81,7 +81,30 @@ yarn add @safeheron/api-sdk
   $ ts-node ./createAccount.ts
   ```
 
-## mpc test
+## Test Send A Transaction
+* Before run the test code, modify `demo/api_demo/.sendtransaction.dist` according to the comments
+  ```ini
+  # your api key
+  APIKEY=
+  # path to your private key file, pem encoded
+  PRIVATE_KEY_PEM_FILE=
+  # path to safeheron api public key file, pem encoded
+  APIKEY_PUBLIC_KEY_PEM_FILE= 
+  # Safheron api url
+  BASE_URL=https://api.safeheron.vip
+  # Wallet Account key
+  ACCOUNT_KEY=
+  # To address
+  DESTINATION_ADDRESS=
+  ```
+* Run the test
+  ```bash
+  $ cd demo/api_demo
+  $ cp .sendtransaction.dist .sendtransactionrc
+  $ ts-node ./sendTransaction.ts
+  ```
+
+## Test MPC Sign
 > This part of the test code is just to illustrate the differences between sign with the private key and Safeheron MPC.
 
 * Before run the test code, modify `demo/mpc_demo/.mpcdemo.dist` according to the comments
