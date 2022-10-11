@@ -105,25 +105,31 @@ yarn add @safeheron/api-sdk
   ```
 
 ## Test MPC Sign
-> This part of the test code is just to illustrate the differences between sign with the private key and Safeheron MPC.
-
 * Before run the test code, modify `demo/mpc_demo/.mpcdemo.dist` according to the comments
   ```ini
-  # Your address
-  ACCOUNT_ADDRESS=
-  # Your private key
-  ACCOUNT_PRIVATE_KEY=
-  # Target address
-  TO_ADDRESS=
-  # Contract address
+  # your api key
+  APIKEY=
+  # path to your private key file, pem encoded
+  PRIVATE_KEY_PEM_FILE=
+  # path to Safeheron api public key file, pem encoded
+  APIKEY_PUBLIC_KEY_PEM_FILE=
+  # Safeheron api url
+  BASE_URL=https://api.safeheron.vip
+  # Wallet Account key
+  ACCOUNT_KEY=
+  # Goerli testnet token address in wallet account
+  ACCOUNT_TOKEN_ADDRESS=
+  # erc20 token contract address
   ERC20_CONTRACT_ADDRESS=
+  # address to receive token
+  TO_ADDRESS=
   ```
 
-* Run `sendEther.ts` or `sendErc20.ts`
+* Run the test
   ```bash
   $ cd demo/mpc_demo
   $ cp .mpcdemo.dist .mpcdemorc
-  $ ts-node ./sendEther.ts
+  $ ts-node ./mpcSign.ts
   ```
 
 
