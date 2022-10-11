@@ -50,6 +50,7 @@ async function createAccount(accountName: string): Promise<CreateAccountResponse
 
   const request: CreateAccountRequest = {
     accountName,
+    hiddenOnUI: true,
   };
 
   return await client.doRequest<CreateAccountRequest, CreateAccountResponse>('/v1/account/create', request);
