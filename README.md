@@ -40,6 +40,7 @@ yarn add @safeheron/api-sdk
   ```
 * Construct `SafeheronClient`
   ```ts
+    // You can get `apiKey` and `safeheronRsaPublicKey` from Safeheron Web Console: https://www.safeheron.com/console.
     const client: SafeheronClient = new SafeheronClient({
         baseUrl: 'https://api.safeheron.vip',
         apiKey: 'd1ad6******a572e7',
