@@ -6,7 +6,6 @@ import {readFileSync} from 'fs';
 import {v4 as uuid} from 'uuid';
 import path from 'path'
 import rc from 'rc';
-import {CreateWeb3PersonalSignRequest, Web3Api} from "../../src/safeheron/web3Api";
 import {
     CreateMPCSignTransactionRequest,
     MCPSignApi,
@@ -21,7 +20,7 @@ const defaults = {
     ACCOUNT_KEY: '',
     ACCOUNT_TOKEN_ADDRESS: '',
     TO_ADDRESS: '',
-    USDC_CONTRACT_ADDRESS: ''
+    ERC20_CONTRACT_ADDRESS: ''
 }
 
 const mpcDemoConfigRC = rc('mpcdemo', defaults)
