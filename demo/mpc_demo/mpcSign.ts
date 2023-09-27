@@ -52,40 +52,6 @@ const provider = new providers.InfuraProvider('goerli');
 const ERC20_CONTRACT_ADDRESS = getConfigValue('ERC20_CONTRACT_ADDRESS');
 const ERC20 = new Contract(ERC20_CONTRACT_ADDRESS, ERC20_ABI, provider);
 
-interface CreateMpcSignRequest {
-    customerRefId: string;
-    sourceAccountKey: string;
-    signAlg: string;
-    hashs: Array<{
-        hash: string;
-        note?: string;
-    }>;
-}
-
-interface CreateMpcSignResponse {
-    txKey: string;
-}
-
-interface RetrieveMpcSignRequest {
-    customerRefId?: string;
-    txKey?: string;
-}
-
-interface RetrieveMpcSignResponse {
-    txKey: string;
-    transactionStatus: string;
-    transactionSubStatus: string;
-    createTime: number;
-    sourceAccountKey: string;
-    customerRefId: string;
-    hashs: Array<{
-        hash: string;
-        sig: string;
-        note: string;
-    }>
-
-}
-
 function delay(num: number) {
     console.log(`wait ${num}ms.`);
     return new Promise((resolve, reject) => {
