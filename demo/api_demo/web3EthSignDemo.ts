@@ -61,7 +61,7 @@ async function main() {
         data: decimals
     });
     const decimalsValue = web3.utils.hexToNumber(result);
-    const tokens = Math.pow(10, decimalsValue);
+    const tokens = 1 * Math.pow(10, decimalsValue);
     // 构建数据
     // @ts-ignore
 
