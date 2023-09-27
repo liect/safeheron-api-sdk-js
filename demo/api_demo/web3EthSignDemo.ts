@@ -62,9 +62,7 @@ async function main() {
     });
     const decimalsValue = web3.utils.hexToNumber(result);
     const tokens = 1 * Math.pow(10, decimalsValue);
-    // 构建数据
     // @ts-ignore
-
     const transfer = web3.utils.sha3('transfer(address,uint256)').substring(0, 10);
     const to = toAddress.substring(2).padStart(64, '0');
     const value = web3.utils.toHex(tokens).substring(2).padStart(64, '0');
