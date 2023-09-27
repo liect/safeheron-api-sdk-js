@@ -57,7 +57,7 @@ async function main() {
         data: decimals
     });
     const decimalsValue = web3.utils.hexToNumber(result);
-    const tokens = Math.pow(10, decimalsValue);
+    const tokens = 1 * Math.pow(10, decimalsValue);
 
     // @ts-ignore
     const transfer = web3.utils.sha3('transfer(address,uint256)').substring(0, 10);
