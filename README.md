@@ -51,13 +51,11 @@ yarn add @safeheron/api-sdk
   ```
 * Call api with `client`
   ```ts
-    const uri = '/v1/account/create';
-
     const request: CreateAccountRequest = {
         accountName: "first_account"
     }
 
-    const createAccountResponse = await client.doRequest<CreateAccountRequest, CreateAccountResponse>(uri, request);
+    const createAccountResponse = await accountApi.createAccount(request);
     // Your code to process response
     ...
   ```
@@ -79,7 +77,7 @@ yarn add @safeheron/api-sdk
   ```bash
   $ cd demo/api_demo
   $ cp .safeheronrc.dist .safeheronrc
-  $ ts-node ./createAccount.ts
+  $ ts-node ./accountDemo.ts
   ```
 
 ## Test Send A Transaction
@@ -102,7 +100,7 @@ yarn add @safeheron/api-sdk
   ```bash
   $ cd demo/api_demo
   $ cp .sendtransaction.dist .sendtransactionrc
-  $ ts-node ./sendTransaction.ts
+  $ ts-node ./transactionDemo.ts
   ```
 
 ## Test MPC Sign

@@ -1,0 +1,661 @@
+import {SafeheronClient} from '../../src/safeheron';
+import {SafeheronConfig} from "../config";
+
+export interface PageSearch {
+    /**
+     * Page number, start from 1 (default)
+     */
+    pageNumber?: number;
+    /**
+     * The number of bars per page, the default is 10, max is 100
+     */
+    pageSize?: number;
+}
+
+export interface ListAccountRequest extends PageSearch {
+    /**
+     * Filter whether there are not-displayed wallet accounts in Safeheron Console
+     * True: retrieve hidden wallet accounts
+     * False: retrieve displayed wallet accounts
+     * Default: retrieve all wallet accounts
+     */
+    hiddenOnUI?: boolean;
+    /**
+     * Filter the response based on this account name prefix
+     */
+    namePrefix?: number;
+    /**
+     * Filter the response based on this account name suffix
+     */
+    nameSuffix?: string;
+}
+
+export interface PageResult<T> {
+    /**
+     * Page number
+     */
+    pageNumber: number;
+
+    /**
+     * The number of bars per page
+     */
+    pageSize: number;
+
+    /**
+     * Total number of records
+     */
+    totalElements: number;
+
+    /**
+     * Data lists per page
+     */
+    content: Array<T>;
+}
+
+
+export interface AccountResponse {
+    /**
+     * Account Key, the only account identifier
+     */
+    accountKey: string;
+
+    /**
+     * Account name
+     */
+    accountName: string;
+
+    /**
+     * Account index
+     */
+    accountIndex: number;
+
+    /**
+     * Account type
+     * VAULT_ACCOUNT: Vault account
+     */
+    accountType: string;
+
+    /**
+     * Whether display in Safeheron Console
+     * True: not display
+     * False: display
+     */
+    hiddenOnUI: boolean;
+
+    /**
+     * Account balance, in USD when retrieve
+     */
+    usdBalance: string;
+
+    /**
+     * Frozen amount of this account, in USD when retrieve
+     */
+    frozenUsdBalance: string;
+
+    /**
+     * Frozen amount by AML of this account, in USD when retrieve
+     */
+    amlLockUsdBalance: string;
+
+    /**
+     * Account public key info
+     */
+    pubKeys: Array<{
+        /**
+         * Signature algorithm, currently supports secp256k1
+         */
+        signAlg: string;
+
+        /**
+         * Account compressed public key
+         */
+        pubKey: string;
+    }>;
+}
+
+export interface CreateAccountRequest {
+    /**
+     * Account name, within 30 characters
+     */
+    accountName?: string;
+    /**
+     * Whether display in Safeheron Console
+     * True: not display
+     * False: display
+     * Default: false
+     */
+    hiddenOnUI?: boolean;
+}
+
+export interface CreateAccountResponse {
+    /**
+     * Wallet account key
+     */
+    accountKey: string;
+    /**
+     * Account public key info
+     */
+    pubKeys: Array<{
+        /**
+         * Signature algorithm, currently supports secp256k1
+         */
+        signAlg: string;
+        /**
+         * Account compressed public key
+         */
+        pubKey: string;
+    }>;
+}
+
+export interface BatchCreateAccountRequest {
+    /**
+     * The prefix of wallet account name, 30 characters max
+     */
+    accountName?: string;
+
+    /**
+     * Number of wallets to be created, greater than 0, less than 100
+     */
+    count: number;
+}
+
+export interface BatchCreateAccountResponse {
+    /**
+     * Wallet account key
+     */
+    accountKeyList: Array<string>;
+}
+
+export interface UpdateAccountShowStateRequest {
+    /**
+     * Wallet account key
+     */
+    accountKey: string;
+
+    /**
+     *    Whether display in Safeheron Console
+     * True: not display
+     * False: display
+     * Default: false
+     */
+    hiddenOnUI: boolean;
+}
+
+export interface ResultResponse {
+    /**
+     * Execution result
+     * True: success
+     * False: fail
+     */
+    result: boolean;
+}
+
+export interface CreateAccountCoinRequest {
+    /**
+     * Coin key
+     */
+    coinKey: string;
+
+    /**
+     * Account key
+     */
+    accountKey: string;
+}
+
+export interface CreateAccountCoinResponse {
+    /**
+     * Coin receiving address
+     */
+    address: string;
+
+    /**
+     * addressType
+     */
+    addressType: string;
+
+    /**
+     * amlLock
+     */
+    amlLock: string;
+}
+
+export interface BatchCreateAccountCoinRequest {
+    /**
+     * Coin key
+     */
+    coinKey: string;
+
+    /**
+     * Account key, max is 100
+     */
+    accountKeyList: Array<string>;
+
+    /**
+     * Address group name, 30 characters max
+     */
+    addressGroupName?: string;
+}
+
+export interface BatchCreateAccountCoinResponse {
+    /**
+     * Address list
+     */
+    addressList: Array<AddressResult>;
+
+    /**
+     * Account key
+     */
+    accountKey: string;
+}
+
+export interface AddressResult {
+    /**
+     * Coin receiving address
+     */
+    address: string;
+
+    /**
+     * addressType
+     */
+    addressType: string;
+
+    /**
+     * amlLock
+     */
+    amlLock: string;
+}
+
+export interface ListAccountCoinRequest {
+    /**
+     * Account key
+     */
+    accountKey: string;
+}
+
+export interface AccountCoinResponse {
+    /**
+     * Coin key
+     */
+    coinKey: string;
+
+    /**
+     * Coin full name
+     */
+    coinFullName: string;
+
+    /**
+     * Coin symbol
+     */
+    coinName: string;
+
+    /**
+     * Coin decimal
+     */
+    coinDecimal: number;
+
+    /**
+     * Transaction URL on explorer
+     */
+    txRefUrl: string;
+
+    /**
+     * Block explorer URL
+     */
+    addressRefUrl: string;
+
+    /**
+     * Coin logo URL
+     */
+    logoUrl: string;
+
+    /**
+     * Coin unit
+     */
+    symbol: string;
+
+    /**
+     * Ability to create multiple address groups
+     * Yes: yes
+     * No: no
+     */
+    isMultipleAddress: string;
+
+    /**
+     * Coin key that is used to pay for the transaction fee when conducting a transfer, such as when transferring ERC-20 tokens, transaction fees are paid in ETH
+     */
+    feeCoinKey: string;
+
+    /**
+     * Transaction fee unit name (Gwei, satoshis)
+     */
+    feeUnit: string;
+
+    /**
+     * Fee decimal on Safeheron Console
+     */
+    feeDecimal: number;
+
+    /**
+     * Displayed coin decimal on Safeheron Console
+     */
+    showCoinDecimal: number;
+
+    /**
+     * Account balance
+     */
+    balance: string;
+
+    /**
+     * Account balance, convert it into USD when query
+     */
+    usdBalance: string;
+
+    /**
+     * Coin address list
+     */
+    addressList: Array<{
+        /**
+         * Coin receiving address
+         */
+        address: string;
+
+        /**
+         * addressType
+         */
+        addressType: string;
+
+        /**
+         * The balance of this coin address
+         */
+        addressBalance: string;
+
+        /**
+         * amlLock
+         */
+        amlLock: string;
+    }>;
+}
+
+export interface ListAccountCoinAddressRequest extends PageSearch {
+    /**
+     * Coin key
+     */
+    coinKey: string;
+
+    /**
+     * Account key
+     */
+    accountKey: string;
+}
+
+export interface AccountCoinAddressResponse {
+    /**
+     * Address group key
+     */
+    addressGroupKey: string;
+
+    /**
+     * Address group name
+     */
+    addressGroupName: string;
+
+    /**
+     * Address list
+     */
+    addressList: Array<AddressResult>;
+}
+
+export interface InfoAccountCoinAddressRequest {
+    /**
+     * Coin key
+     */
+    coinKey: string;
+
+    /**
+     * Coin receiving address
+     */
+    address: string;
+}
+
+export interface InfoAccountCoinAddressResponse {
+    /**
+     * Coin receiving address
+     */
+    address: string;
+
+    /**
+     * Address type
+     */
+    addressType: string;
+
+    /**
+     * The balance of the coin address
+     */
+    addressBalance: string;
+
+    /**
+     * Account key
+     */
+    accountKey: string;
+
+    /**
+     * The account is frozen by AML
+     * YES: frozen
+     * NO: unfrozen
+     */
+    amlLock: string;
+}
+
+export interface RenameAccountCoinAddressRequest {
+    /**
+     * Address group key
+     */
+    addressGroupKey: string;
+
+    /**
+     * Address group name, 30 characters max
+     */
+    addressGroupName: string;
+}
+
+export interface CreateAccountCoinAddressRequest {
+    /**
+     * Coin key
+     */
+    coinKey: string;
+
+    /**
+     * Account key
+     */
+    accountKey: string;
+
+    /**
+     * Address group name, 30 characters max
+     */
+    addressGroupName: string;
+}
+
+export interface CreateAccountCoinAddressResponse {
+    /**
+     * Coin receiving address
+     */
+    address: string;
+
+    /**
+     * addressType
+     */
+    addressType: string;
+
+    /**
+     * amlLock
+     */
+    amlLock: string;
+}
+
+export interface BatchCreateAccountCoinUTXORequest {
+    /**
+     * Coin key
+     */
+    coinKey: string;
+
+    /**
+     * Account key
+     */
+    accountKey: string;
+
+    /**
+     * The number, max is 100
+     */
+    count: number;
+
+    /**
+     * Address group name, 30 characters max
+     */
+    addressGroupName?: string;
+}
+
+export interface BatchCreateAccountCoinUTXOResponse {
+    /**
+     * Address list
+     */
+    addressList: Array<{
+        /**
+         * Coin receiving address
+         */
+        address: string;
+
+        /**
+         * addressType
+         */
+        addressType: string;
+
+        /**
+         * amlLock
+         */
+        amlLock: string;
+    }>;
+
+    /**
+     * Account key
+     */
+    accountKey: string;
+}
+
+export class AccountApi {
+
+    private client: SafeheronClient;
+
+    constructor(config: SafeheronConfig) {
+        this.client = new SafeheronClient({
+            baseUrl: config.baseUrl,
+            apiKey: config.apiKey,
+            rsaPrivateKey: config.rsaPrivateKey,
+            safeheronRsaPublicKey: config.safeheronRsaPublicKey,
+            requestTimeout: config.requestTimeout
+        });
+    }
+
+    /**
+     * List Wallet Accounts
+     * Filter wallet account lists in team according to different combinations of conditions.
+     */
+    async listAccounts(request: ListAccountRequest): Promise<PageResult<AccountResponse>> {
+        return await this.client.doRequest<CreateAccountRequest, PageResult<AccountResponse>>('/v1/account/list', request);
+    }
+
+    /**
+     * Create a new wallet account.
+     */
+    async createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse> {
+        return await this.client.doRequest<CreateAccountRequest, CreateAccountResponse>('/v1/account/create', request);
+    }
+
+    /**
+     * Batch Create Wallet Accounts V1
+     * Generate a batch of wallet accounts based on a specified quantity. By default, the wallet accounts created in bulk will not be displayed in the Safeheron App. For optimal results, we recommend using the V2 version.
+     */
+    async batchCreateAccountV1(request: BatchCreateAccountRequest): Promise<BatchCreateAccountResponse> {
+        return await this.client.doRequest<BatchCreateAccountRequest, BatchCreateAccountResponse>('/v1/account/batch/create', request);
+    }
+
+    /**
+     * Batch Create Wallet Accounts V2
+     * Generate a batch of wallet accounts based on a specified quantity. By default, the wallet accounts created in bulk will not be displayed in the Safeheron App.
+     */
+    async batchCreateAccountV2(request: BatchCreateAccountRequest): Promise<Array<CreateAccountResponse>> {
+        return await this.client.doRequest<BatchCreateAccountRequest, Array<CreateAccountResponse>>('/v2/account/batch/create', request);
+    }
+
+    /**
+     * Change Display of Wallet Account in App
+     * Change wallet account status in Safeheron App.
+     */
+    async updateAccountShowState(request: UpdateAccountShowStateRequest): Promise<ResultResponse> {
+        return await this.client.doRequest<UpdateAccountShowStateRequest, ResultResponse>('/v1/account/update/show/state', request);
+    }
+
+    /**
+     * Add Coins to a Wallet Account
+     * Add a new coin to your wallet account, while generating the default address group for the added coin. Once successfully completed, it will return the address information of the newly created default address group. In case the added currency already exists within the account, it will promptly return the existing default address group information for that coin.
+     * In a wallet account, UTXO-based cryptocurrencies can have multiple address groups, while other types of cryptocurrencies usually have only one. To check whether a particular cryptocurrency supports the addition of multiple address groups, simply check the 'isMultipleAddress' parameter through the Coin List.
+     */
+    async createAccountCoin(request: CreateAccountCoinRequest): Promise<Array<CreateAccountCoinResponse>> {
+        return await this.client.doRequest<CreateAccountCoinRequest, Array<CreateAccountCoinResponse>>('/v1/account/coin/create', request);
+    }
+
+    /**
+     * Batch Add Coins to Wallet Accounts
+     * Bulk addition of specified coins to designated wallet accounts. And, it creates a default address group for each coin and returns the address information contained within the newly created default address group. If a wallet account already contains the currency being added, the function will return the default address group data for that existing coin.
+     */
+    async batchCreateAccountCoin(request: BatchCreateAccountCoinRequest): Promise<Array<BatchCreateAccountCoinResponse>> {
+        return await this.client.doRequest<BatchCreateAccountCoinRequest, Array<BatchCreateAccountCoinResponse>>('/v1/account/batch/coin/create', request);
+    }
+
+    /**
+     * List Coins Within a Wallet Account
+     * Retrieve a complete list of all coins associated with a wallet account, along with the default address group information for each coin.
+     */
+    async listAccountCoin(request: ListAccountCoinRequest): Promise<Array<AccountCoinResponse>> {
+        return await this.client.doRequest<ListAccountCoinRequest, Array<AccountCoinResponse>>('/v1/account/coin/list', request);
+    }
+
+    /**
+     * List Coin Address Group of a Wallet Account
+     * Retrieve all address groups for a coin within the wallet account.
+     */
+    async listAccountCoinAddress(request: ListAccountCoinAddressRequest): Promise<PageResult<AccountCoinAddressResponse>> {
+        return await this.client.doRequest<ListAccountCoinAddressRequest, PageResult<AccountCoinAddressResponse>>('/v1/account/coin/address/list', request);
+    }
+
+    /**
+     * Retrieve The Balance of an Address
+     * Retrieve the balance of a specific coin address.
+     */
+    async infoAccountCoinAddress(request: InfoAccountCoinAddressRequest): Promise<InfoAccountCoinAddressResponse> {
+        return await this.client.doRequest<InfoAccountCoinAddressRequest, InfoAccountCoinAddressResponse>('/v1/account/coin/address/info', request);
+    }
+
+    /**
+     * Rename Coin Address Group of a Wallet Account
+     * Rename a coin address group of a wallet account.
+     */
+    async renameAccountCoinAddress(request: RenameAccountCoinAddressRequest): Promise<ResultResponse> {
+        return await this.client.doRequest<RenameAccountCoinAddressRequest, ResultResponse>('/v1/account/coin/address/name', request);
+    }
+
+    /**
+     * Add Address Group for UTXO-Based Coin
+     * Add a new address group for UTXO-based cryptocurrencies under a wallet account. If the coin does not exist, it will be added first, followed by the new address group. The function will return the details of the added address(es).
+     */
+    async createAccountCoinAddress(request: CreateAccountCoinAddressRequest): Promise<CreateAccountCoinAddressResponse> {
+        return await this.client.doRequest<CreateAccountCoinAddressRequest, CreateAccountCoinAddressResponse>('/v1/account/coin/address/create', request);
+    }
+
+    /**
+     * Batch Add Address Groups for UTXO-Based Coin
+     * For UTXO-based coins in a wallet account, it is possible to add multiple address groups to the account in bulk by specifying the wallet account and the desired number of address groups. The function will return the details of the added address groups. If the specified coin does not exist in the account, it will be added first, followed by the addition of the corresponding number of address groups.
+     */
+    async batchCreateAccountCoinUTXO(request: BatchCreateAccountCoinUTXORequest): Promise<Array<BatchCreateAccountCoinUTXOResponse>> {
+        return await this.client.doRequest<BatchCreateAccountCoinUTXORequest, Array<BatchCreateAccountCoinUTXOResponse>>('/v1/account/coin/utxo/batch/create', request);
+    }
+}
