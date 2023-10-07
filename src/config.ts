@@ -3,4 +3,5 @@ export interface SafeheronConfig {
   apiKey: string;
   rsaPrivateKey: string;
   safeheronRsaPublicKey: string;
+  requestTimeout: number;
 }

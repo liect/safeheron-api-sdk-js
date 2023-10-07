@@ -593,7 +593,7 @@ export interface Web3SignResponse {
     }
 }
 
-export interface ListWeb3SignRequest extends LimitSearch{
+export interface ListWeb3SignRequest extends LimitSearch {
 
     /**
      * Web3 Sign type
@@ -631,6 +631,7 @@ export class Web3Api {
             apiKey: config.apiKey,
             rsaPrivateKey: config.rsaPrivateKey,
             safeheronRsaPublicKey: config.safeheronRsaPublicKey,
+            requestTimeout: config.requestTimeout
         });
     }
 

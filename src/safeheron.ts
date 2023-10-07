@@ -14,7 +14,7 @@ export class SafeheronClient {
         this.converter = new Converter(config);
         this.axiosInstance = axios.create({
             baseURL: this.config.baseUrl,
-            timeout: 10000,
+            timeout: this.config.requestTimeout,
         });
     }
 

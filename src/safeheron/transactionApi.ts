@@ -965,6 +965,7 @@ export class TransactionApi {
             apiKey: config.apiKey,
             rsaPrivateKey: config.rsaPrivateKey,
             safeheronRsaPublicKey: config.safeheronRsaPublicKey,
+            requestTimeout: config.requestTimeout
         });
     }
 

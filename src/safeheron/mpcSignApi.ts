@@ -171,6 +171,7 @@ export class MCPSignApi {
             apiKey: config.apiKey,
             rsaPrivateKey: config.rsaPrivateKey,
             safeheronRsaPublicKey: config.safeheronRsaPublicKey,
+            requestTimeout: config.requestTimeout
         });
     }
 

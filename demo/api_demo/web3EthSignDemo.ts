@@ -44,13 +44,6 @@ const erc20ContractAddress = getConfigValue('ERC_20_CONTRACT_ADDRESS');
 const toAddress = getConfigValue('TO_ADDRESS');
 const ethereumRpcApi = getConfigValue('ETHEREUM_RPC_API');
 
-const client: SafeheronClient = new SafeheronClient({
-    baseUrl: getConfigValue('BASE_URL'),
-    apiKey,
-    rsaPrivateKey: yourPrivateKey,
-    safeheronRsaPublicKey: apiKeyPublicKey,
-});
-
 async function main() {
     const web3 = new Web3(ethereumRpcApi);
 
@@ -101,6 +94,7 @@ async function main() {
         apiKey,
         rsaPrivateKey: yourPrivateKey,
         safeheronRsaPublicKey: apiKeyPublicKey,
+        requestTimeout: 10000
     });
 
     const request: CreateWeb3EthSignRequest = {

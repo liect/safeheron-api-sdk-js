@@ -38,6 +38,7 @@ async function main() {
             apiKey,
             rsaPrivateKey: yourPrivateKey,
             safeheronRsaPublicKey: apiKeyPublicKey,
+            requestTimeout: 10000
         });
 
         const request: CreateTransactionRequest = {

@@ -36,13 +36,6 @@ const yourPrivateKey = readFileSync(path.resolve(getConfigValue('PRIVATE_KEY_PEM
 const accountKey = getConfigValue('ACCOUNT_KEY');
 const ethereumRpcApi = getConfigValue('ETHEREUM_RPC_API');
 
-const client: SafeheronClient = new SafeheronClient({
-    baseUrl: getConfigValue('BASE_URL'),
-    apiKey,
-    rsaPrivateKey: yourPrivateKey,
-    safeheronRsaPublicKey: apiKeyPublicKey,
-});
-
 async function main() {
     const web3 = new Web3(ethereumRpcApi);
     const chainId = await web3.eth.getChainId();
@@ -52,6 +45,7 @@ async function main() {
         apiKey,
         rsaPrivateKey: yourPrivateKey,
         safeheronRsaPublicKey: apiKeyPublicKey,
+        requestTimeout: 10000
     });
 
     const request: CreateWeb3PersonalSignRequest = {

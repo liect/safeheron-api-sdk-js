@@ -38,14 +38,6 @@ const apiKeyPublicKey = readFileSync(path.resolve(getConfigValue('APIKEY_PUBLIC_
 const yourPrivateKey = readFileSync(path.resolve(getConfigValue('PRIVATE_KEY_PEM_FILE')), 'utf8');
 const accountTokenAddress = getConfigValue('ACCOUNT_TOKEN_ADDRESS');
 
-const client: SafeheronClient = new SafeheronClient({
-    baseUrl: getConfigValue('BASE_URL'),
-    apiKey,
-    rsaPrivateKey: yourPrivateKey,
-    safeheronRsaPublicKey: apiKeyPublicKey,
-});
-
-
 const provider = new providers.InfuraProvider('goerli');
 
 // Define Contract address
@@ -156,6 +148,7 @@ async function main() {
         apiKey,
         rsaPrivateKey: yourPrivateKey,
         safeheronRsaPublicKey: apiKeyPublicKey,
+        requestTimeout: 10000
     });
 
     // Sign with safeheron mpc

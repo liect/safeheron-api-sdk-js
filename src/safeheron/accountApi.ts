@@ -119,7 +119,7 @@ export interface CreateAccountRequest {
      */
     accountName?: string;
     /**
-     * 	Whether display in Safeheron Console
+     * Whether display in Safeheron Console
      * True: not display
      * False: display
      * Default: false
@@ -376,7 +376,7 @@ export interface AccountCoinResponse {
     }>;
 }
 
-export interface ListAccountCoinAddressRequest extends PageSearch{
+export interface ListAccountCoinAddressRequest extends PageSearch {
     /**
      * Coin key
      */
@@ -551,6 +551,7 @@ export class AccountApi {
             apiKey: config.apiKey,
             rsaPrivateKey: config.rsaPrivateKey,
             safeheronRsaPublicKey: config.safeheronRsaPublicKey,
+            requestTimeout: config.requestTimeout
         });
     }
 

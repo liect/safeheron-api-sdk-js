@@ -258,6 +258,7 @@ export class CoinApi {
             apiKey: config.apiKey,
             rsaPrivateKey: config.rsaPrivateKey,
             safeheronRsaPublicKey: config.safeheronRsaPublicKey,
+            requestTimeout: config.requestTimeout
         });
     }
 
