@@ -3,6 +3,5 @@ node_modules
 .vscode
 .idea
 .DS_Store
-demo/api_demo/.*rc
-demo/mpc_demo/.*rc
+demo/**/.*rc
 

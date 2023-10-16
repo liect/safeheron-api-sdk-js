@@ -1,4 +1,0 @@
-# RSA private key (biz_privkey) is configured in the audit service.
-BIZ_PRIV_KEY=BIZ_PRIV_KEY
-# RSA public key (api_pubkey) is used in the API Key configuration on Safeheron Web Console.
-API_PUB_KEY=API_PUB_KEY
