@@ -5,3 +5,14 @@ export interface SafeheronConfig {
   safeheronRsaPublicKey: string;
   requestTimeout: number;
 }
+
+
+export interface SafeheronCoSignerConfig {
+  bizPrivKey: string;
+  apiPubKey: string;
+}
+
+export interface SafeheronWebHookConfig {
+  safeheronWebHookRsaPublicKey: string;
+  webHookRsaPrivateKey: string;
+}

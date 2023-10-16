@@ -14,3 +14,26 @@ export interface BaseResponse {
   timestamp: string;
   sig: string;
 }
+
+export interface CoSignerCallBack {
+  bizContent: string;
+  key: string;
+  timestamp: string;
+  sig: string;
+}
+
+export interface CoSignerResponse {
+  code: number;
+  timestamp: string;
+  message: string;
+  key?: string;
+  sig?: string;
+  bizContent?: string;
+}
+
+export interface WebHook {
+  bizContent: string;
+  key: string;
+  timestamp: string;
+  sig: string;
+}
