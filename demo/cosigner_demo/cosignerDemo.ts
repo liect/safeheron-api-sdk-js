@@ -1,10 +1,12 @@
 import {SafeheronError} from './../../src/safeheronError';
 import rc from 'rc';
 import {CoSignerConverter} from "../../src/safeheron/coSignerConverter";
+import {readFileSync} from "fs";
+import path from "path";
 
 const defaults = {
-    BIZ_PRIV_KEY: '',
-    API_PUB_KEY: ''
+    BIZ_PRIV_KEY_PEM_FILE: '',
+    API_PUB_KEY_PEM_FILE: ''
 }
 
 const safeheronCosignerConfigRC = rc('cosigner', defaults)
@@ -17,8 +19,8 @@ function getConfigValue(key: string) {
     return value;
 }
 
-const bizPrivKey = getConfigValue('BIZ_PRIV_KEY');
-const apiPubKey = getConfigValue('API_PUB_KEY');
+const bizPrivKey = readFileSync(path.resolve(getConfigValue('BIZ_PRIV_KEY_PEM_FILE')), 'utf8');
+const apiPubKey = readFileSync(path.resolve(getConfigValue('API_PUB_KEY_PEM_FILE')), 'utf8');
 
 
 async function main() {

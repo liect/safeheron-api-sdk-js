@@ -146,6 +146,11 @@ export interface TransactionsResponse {
     destinationTag: string;
 
     /**
+     * Transaction type
+     */
+    transactionType: string;
+
+    /**
      * Transaction status
      */
     transactionStatus: string;
@@ -612,6 +617,11 @@ export interface OneTransactionsResponse {
      * If the destination is tag or memo type, then this value is empty
      */
     destinationTag: string;
+
+    /**
+     * Transaction type
+     */
+    transactionType: string;
 
     /**
      * Transaction status

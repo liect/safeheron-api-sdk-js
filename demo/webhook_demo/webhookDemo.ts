@@ -1,10 +1,12 @@
 import {SafeheronError} from './../../src/safeheronError';
 import rc from 'rc';
 import {WebHookConverter} from "../../src/safeheron/webHookConverter";
+import {readFileSync} from "fs";
+import path from "path";
 
 const defaults = {
-    WEB_HOOK_RSA_PRIVATE_KEY: '',
-    SAFEHERON_WEB_HOOK_RSA_PUBLIC_KEY: ''
+    WEB_HOOK_RSA_PRIVATE_KEY_PEM_FILE: '',
+    SAFEHERON_WEB_HOOK_RSA_PUBLIC_KEY_PEM_FILE: ''
 }
 
 const safeheronWebHookConfigRC = rc('webhook', defaults)
@@ -18,15 +20,15 @@ function getConfigValue(key: string) {
 }
 
 
-const safeheronWebHookRsaPublicKey = getConfigValue('SAFEHERON_WEB_HOOK_RSA_PUBLIC_KEY');
-const webHookRsaPrivateKey = getConfigValue('WEB_HOOK_RSA_PRIVATE_KEY');
+const webHookRsaPrivateKey = readFileSync(path.resolve(getConfigValue('WEB_HOOK_RSA_PRIVATE_KEY_PEM_FILE')), 'utf8');
+const safeheronWebHookRsaPublicKey = readFileSync(path.resolve(getConfigValue('SAFEHERON_WEB_HOOK_RSA_PUBLIC_KEY_PEM_FILE')), 'utf8');
 
 
 async function main() {
     try {
         const converter: WebHookConverter = new WebHookConverter({
-            safeheronWebHookRsaPublicKey: safeheronWebHookRsaPublicKey,
             webHookRsaPrivateKey: webHookRsaPrivateKey,
+            safeheronWebHookRsaPublicKey: safeheronWebHookRsaPublicKey
         });
 
         const webHook = converter.convertWebHook({
