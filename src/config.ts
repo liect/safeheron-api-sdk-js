@@ -13,6 +13,6 @@ export interface SafeheronCoSignerConfig {
 }
 
 export interface SafeheronWebHookConfig {
-  safeheronWebHookRsaPublicKey: string;
   webHookRsaPrivateKey: string;
+  safeheronWebHookRsaPublicKey: string;
 }
