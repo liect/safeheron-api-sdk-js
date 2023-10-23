@@ -76,6 +76,11 @@ export interface AccountResponse {
     accountType: string;
 
     /**
+     * Account tag
+     */
+    accountTag: string;
+
+    /**
      * Whether display in Safeheron Console
      * True: not display
      * False: display
@@ -125,6 +130,10 @@ export interface CreateAccountRequest {
      * Default: false
      */
     hiddenOnUI?: boolean;
+    /**
+     * Account tag
+     */
+    accountTag?: string;
 }
 
 export interface CreateAccountResponse {
@@ -157,6 +166,10 @@ export interface BatchCreateAccountRequest {
      * Number of wallets to be created, greater than 0, less than 100
      */
     count: number;
+    /**
+     * Account tag
+     */
+    accountTag?: string;
 }
 
 export interface BatchCreateAccountResponse {
@@ -180,6 +193,19 @@ export interface UpdateAccountShowStateRequest {
      */
     hiddenOnUI: boolean;
 }
+
+export interface BatchUpdateAccountTagRequest {
+    /**
+     * Wallet account key
+     */
+    accountKey: string;
+
+    /**
+     * Account tag
+     */
+    accountTag: string;
+}
+
 
 export interface ResultResponse {
     /**
@@ -592,6 +618,15 @@ export class AccountApi {
      */
     async updateAccountShowState(request: UpdateAccountShowStateRequest): Promise<ResultResponse> {
         return await this.client.doRequest<UpdateAccountShowStateRequest, ResultResponse>('/v1/account/update/show/state', request);
+    }
+
+    /**
+     * Batch Label Wallet Accounts
+     * Relabel a batch of wallet accounts.
+     * Please note that it only supports to label wallets which are created by API. And, the wallets have been used to sweep the target account cannot be relabelled.
+     */
+    async batchUpdateAccountTag(request: BatchUpdateAccountTagRequest): Promise<ResultResponse> {
+        return await this.client.doRequest<BatchUpdateAccountTagRequest, ResultResponse>('/v1/account/batch/update/tag', request);
     }
 
     /**
