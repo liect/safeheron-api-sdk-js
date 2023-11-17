@@ -211,6 +211,13 @@ export interface TransactionsResponse {
     customerExt2: string;
 
     /**
+     * Whether the source address contains AML address(es)
+     *     YES: contain
+     *     NO: not contain
+     */
+    amlLock: string;
+
+    /**
      * Block height (for confirming transaction and succeeded transaction)
      */
     blockHeight: number;
@@ -682,6 +689,13 @@ export interface OneTransactionsResponse {
      * Merchant extended field
      */
     customerExt2: string;
+
+    /**
+     * Whether the source address contains AML address(es)
+     *     YES: contain
+     *     NO: not contain
+     */
+    amlLock: string;
 
     /**
      * Block height (for confirming transaction and succeeded transaction)
