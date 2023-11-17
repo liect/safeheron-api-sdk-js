@@ -93,16 +93,6 @@ export interface AccountResponse {
     usdBalance: string;
 
     /**
-     * Frozen amount of this account, in USD when retrieve
-     */
-    frozenUsdBalance: string;
-
-    /**
-     * Frozen amount by AML of this account, in USD when retrieve
-     */
-    amlLockUsdBalance: string;
-
-    /**
      * Account public key info
      */
     pubKeys: Array<{
@@ -134,6 +124,10 @@ export interface CreateAccountRequest {
      * Account tag
      */
     accountTag?: string;
+    /**
+     * 	Coin key list, 20 array elements max
+     */
+    coinKeyList?: Array<string>;
 }
 
 export interface CreateAccountResponse {
@@ -153,6 +147,28 @@ export interface CreateAccountResponse {
          * Account compressed public key
          */
         pubKey: string;
+    }>;
+    /**
+     * Coin address list
+     */
+    coinAddressList: Array<{
+        /**
+         * Coin key
+         */
+        coinKey: string;
+        /**
+         * Address list
+         */
+        addressList: Array<{
+            /**
+             * Coin receiving address
+             */
+            address: string;
+            /**
+             * Address type
+             */
+            addressType: string;
+        }>;
     }>;
 }
 
@@ -238,11 +254,6 @@ export interface CreateAccountCoinResponse {
      * addressType
      */
     addressType: string;
-
-    /**
-     * amlLock
-     */
-    amlLock: string;
 }
 
 export interface BatchCreateAccountCoinRequest {
@@ -284,11 +295,6 @@ export interface AddressResult {
      * addressType
      */
     addressType: string;
-
-    /**
-     * amlLock
-     */
-    amlLock: string;
 }
 
 export interface ListAccountCoinRequest {
@@ -394,11 +400,6 @@ export interface AccountCoinResponse {
          * The balance of this coin address
          */
         addressBalance: string;
-
-        /**
-         * amlLock
-         */
-        amlLock: string;
     }>;
 }
 
@@ -463,13 +464,6 @@ export interface InfoAccountCoinAddressResponse {
      * Account key
      */
     accountKey: string;
-
-    /**
-     * The account is frozen by AML
-     * YES: frozen
-     * NO: unfrozen
-     */
-    amlLock: string;
 }
 
 export interface RenameAccountCoinAddressRequest {
@@ -511,11 +505,6 @@ export interface CreateAccountCoinAddressResponse {
      * addressType
      */
     addressType: string;
-
-    /**
-     * amlLock
-     */
-    amlLock: string;
 }
 
 export interface BatchCreateAccountCoinUTXORequest {
@@ -554,11 +543,6 @@ export interface BatchCreateAccountCoinUTXOResponse {
          * addressType
          */
         addressType: string;
-
-        /**
-         * amlLock
-         */
-        amlLock: string;
     }>;
 
     /**
