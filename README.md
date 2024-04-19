@@ -20,42 +20,35 @@ yarn add @safeheron/api-sdk
 
 > Take `/v1/account/create` as an example to explain, the complete code can be found in `demo/api_demo/` directory
 
-* Define request parameter data object
+* Import 
   ```ts
-    interface CreateAccountRequest {
-        accountName?: string;
-        hiddenOnUI?: boolean;
-    }
+    import { AccountApi, CreateAccountRequest, CreateAccountResponse } from "@safeheron/api-sdk";
   ```
 
-* Define response data object
-  ```ts
-    interface CreateAccountResponse {
-        accountKey: string;
-        pubKeys: Array<{
-            signAlg: string;
-            pubKey: string;
-        }>;
-    };
-  ```
-* Construct `SafeheronClient`
+* Construct `AccountApi`
   ```ts
     // You can get `apiKey` and `safeheronRsaPublicKey` from Safeheron Web Console: https://www.safeheron.com/console.
-    const client: SafeheronClient = new SafeheronClient({
+    const accountApi = new AccountApi({
         baseUrl: 'https://api.safeheron.vip',
         apiKey: 'd1ad6******a572e7',
-        rsaPrivateKey: privateKey,
-        safeheronRsaPublicKey: publicKey,
+        // Here are two configuration options:
+        // 1. Configure the path to the private key file, for example: file:/path/to/your/private/key/file.pem
+        // 2. Configure the private key content in string format, for example: -----BEGIN PRIVATE KEY-----\nMIIJQgIBADANBgkqhkiG****ICAQDidDHYV73U4cub\n-----END PUBLIC KEY-----
+        rsaPrivateKey: "file:/path/to/your/private/key/file.pem",
+        // You can get safeheronRsaPublicKey from Safeheron Web Console. Here are two configuration options:
+        // 1. Save safeheronRsaPublicKey to a file and configure the path to the file, for example: file:/path/to/safeheron/public/key/file.pem
+        // 2. Directly paste the public key that you copied from the web console, for example: MIICIjANBgkqhki****8eUQV63wRS0CAwEAAQ==
+        safeheronRsaPublicKey: "MIICIjANBgkqhki****8eUQV63wRS0CAwEAAQ==",
         requestTimeout: 3000,
     });
   ```
-* Call api with `client`
+* Call api with `AccountApi`
   ```ts
     const request: CreateAccountRequest = {
         accountName: "first_account"
     }
 
-    const createAccountResponse = await accountApi.createAccount(request);
+    const createAccountResponse:CreateAccountResponse = await accountApi.createAccount(request);
     // Your code to process response
     ...
   ```
