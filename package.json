@@ -1,9 +1,9 @@
 {
   "name": "@safeheron/api-sdk",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Javascript & Typescript SDK for Safeheron API",
-  "main": "./lib/safeheron.js",
-  "types": "./lib/safeheron.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "build": "rm -rf ./lib && tsc",
     "test": "jest",
@@ -24,8 +24,7 @@
   "license": "MIT",
   "homepage": "https://github.com/Safeheron/safeheron-api-sdk-js",
   "dependencies": {
-    "axios": "^0.27.2",
-    "crypto": "^1.0.1",
+    "axios": "^1.6.8",
     "tslib": "^2.4.0"
   },
   "devDependencies": {

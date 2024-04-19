@@ -3,6 +3,8 @@ import {SafeheronConfig} from './config';
 import {Converter} from './converter';
 import {BaseRequest, BaseResponse} from './model/BaseModel';
 import {SafeheronError} from './safeheronError';
+import {readFileSync} from "fs";
+import path from 'path';
 
 export class SafeheronClient {
     private config: SafeheronConfig;
@@ -10,6 +12,21 @@ export class SafeheronClient {
     private axiosInstance: AxiosInstance;
 
     constructor(config: SafeheronConfig) {
+        // support read from file.
+        if(config.rsaPrivateKey.startsWith("file:")){
+            config.rsaPrivateKey = readFileSync(path.resolve(config.rsaPrivateKey.substring(5)), 'utf8');
+        }
+
+        // support read from file.
+        if(config.safeheronRsaPublicKey.startsWith("file:")){
+            config.safeheronRsaPublicKey = readFileSync(path.resolve(config.safeheronRsaPublicKey.substring(5)), 'utf8');
+        }
+
+        // support direct copy from safeheron web console.
+        if (!config.safeheronRsaPublicKey.startsWith("-----BEGIN")){
+            config.safeheronRsaPublicKey = ["-----BEGIN PUBLIC KEY-----", config.safeheronRsaPublicKey, "-----END PUBLIC KEY-----"].join("\n")
+        }
+
         this.config = config;
         this.converter = new Converter(config);
         this.axiosInstance = axios.create({

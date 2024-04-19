@@ -1,4 +1,4 @@
-import {SafeheronClient} from '../../src/safeheron';
+import {SafeheronClient} from '../safeheron';
 import {SafeheronConfig} from "../config";
 import {LimitSearch, TxKeyResult} from "./transactionApi";
 

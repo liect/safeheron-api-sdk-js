@@ -1,5 +1,4 @@
 import crypto, {BinaryLike, CipherKey} from 'crypto';
-import * as buffer from "buffer";
 
 export class AES {
     algorithm: string = 'aes-256-cbc';
