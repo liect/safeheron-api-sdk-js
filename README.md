@@ -38,7 +38,7 @@ yarn add @safeheron/api-sdk
         // You can get safeheronRsaPublicKey from Safeheron Web Console. Here are two configuration options:
         // 1. Save safeheronRsaPublicKey to a file and configure the path to the file, for example: file:/path/to/safeheron/public/key/file.pem
         // 2. Directly paste the public key that you copied from the web console, for example: MIICIjANBgkqhki****8eUQV63wRS0CAwEAAQ==
-        safeheronRsaPublicKey: "file:/path/to/safeheron/public/key/file.pem",
+        safeheronRsaPublicKey: "MIICIjANBgkqhki****8eUQV63wRS0CAwEAAQ==",
         requestTimeout: 3000,
     });
   ```
