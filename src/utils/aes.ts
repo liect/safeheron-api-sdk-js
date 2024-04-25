@@ -1,10 +1,24 @@
 import crypto, {BinaryLike, CipherKey} from 'crypto';
 
 export class AES {
+
+    CBC:string = "CBC_PKCS7Padding"
+
+    GCM: string = "GCM_NoPadding"
+
     algorithm: string = 'aes-256-cbc';
+
+    algorithmGCM: string = 'aes-256-gcm';
 
     encrypt(srcData: string, key: CipherKey, iv: BinaryLike): string {
         const cipher = crypto.createCipheriv(this.algorithm, key, iv);
+        let encrypted = cipher.update(srcData);
+        encrypted = Buffer.concat([encrypted, cipher.final()]);
+        return encrypted.toString('base64');
+    }
+
+    encryptGCM(srcData: string, key: CipherKey, iv: BinaryLike): string {
+        const cipher = crypto.createCipheriv(this.algorithmGCM, key, iv);
         let encrypted = cipher.update(srcData);
         encrypted = Buffer.concat([encrypted, cipher.final()]);
         return encrypted.toString('base64');
@@ -17,5 +31,13 @@ export class AES {
         let decrypted = decipher.update(Buffer.from(cipherText, 'base64'));
         decrypted = Buffer.concat([decrypted, decipher.final()]);
         return decrypted.toString();
+    }
+
+    decryptGCM(cipherText: string, keyAndIv: Buffer): string {
+        const key = keyAndIv.subarray(0, 32);
+        const iv = keyAndIv.subarray(32);
+        const decipher = crypto.createDecipheriv(this.algorithmGCM, key, iv);
+        let decrypted = decipher.update(Buffer.from(cipherText, 'base64'));
+        return decrypted.subarray(0,decrypted.length-iv.length).toString();
     }
 }

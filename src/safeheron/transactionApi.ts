@@ -126,6 +126,11 @@ export interface TransactionsResponse {
     sourceAddress: string;
 
     /**
+     * Source address list
+     */
+    sourceAddressList: Array<SourceAddress>;
+
+    /**
      * Destination account key
      */
     destinationAccountKey: string;
@@ -139,6 +144,11 @@ export interface TransactionsResponse {
      * Destination address
      */
     destinationAddress: string;
+
+    /**
+     * Destination address list
+     */
+    destinationAddressList?: Array<DestinationAddress>;
 
     /**
      * If the destination is tag or memo type, then this value is empty
@@ -271,6 +281,13 @@ export interface TransactionsResponse {
      * Creator username
      */
     createdByUserName: string;
+}
+
+export interface SourceAddress {
+    /**
+     * Source address
+     */
+    address?: string;
 }
 
 export interface LimitSearch {
@@ -412,6 +429,16 @@ export interface FeeRateDto {
      * SUI gas budget, similar to EIP-1559 max fee
      */
     gasBudget?: string;
+
+    /**
+     * The gas price the transaction sender is willing to pay, similar to EVM gasPrice
+     */
+    gasUnitPrice?: string;
+
+    /**
+     * The maximum number of gas units that the transaction sender is willing to spend to execute the transaction, similar to EVM gasLimit
+     */
+    maxGasAmount?: string;
 }
 
 export interface CreateTransactionRequest {
@@ -517,9 +544,93 @@ export interface CreateTransactionRequest {
     nonce?: number;
 
     /**
+     * Customizable sequence number on Aptos, similar to the nonce in the EVM.
+     */
+    sequenceNumber?: number;
+
+    /**
      * Balance verification, BALANCE_CHECK by default
      */
     balanceVerifyType?: string;
+}
+
+export interface CreateTransactionsUTXOMultidestRequest {
+    /**
+     * Merchant unique business ID (100 characters max)
+     */
+    customerRefId: string;
+
+    /**
+     * Merchant extended field (defined by merchant) shown to merchant (255 characters max)
+     */
+    customerExt1?: string;
+
+    /**
+     * Merchant extended field (defined by merchant) shown to merchant (255 characters max)
+     */
+    customerExt2?: string;
+
+    /**
+     * Transaction note (180 characters max)
+     */
+    note?: string;
+
+    /**
+     * Coin key
+     */
+    coinKey: string;
+
+    /**
+     * Transaction Fee Rate Grade
+     * Choose between transaction fees. If the transaction fee rate is preset, it will take priority
+     */
+    txFeeLevel?: string;
+
+    /**
+     * Transaction fee rate, either txFeeLevel or feeRateDto
+     */
+    feeRateDto?: FeeRateDto
+
+    /**
+     * Maximum estimated transaction fee rate for a given transaction
+     */
+    maxTxFeeRate?: string;
+
+    /**
+     * Source account key
+     */
+    sourceAccountKey: string;
+
+    /**
+     * Account type
+     */
+    sourceAccountType: string;
+
+    /**
+     * If the destinationAccountType is ONE_TIME_ADDRESS, then this field should have a value
+     */
+    destinationAddressList?: Array<DestinationAddress>;
+
+    /**
+     * Destination Tag
+     */
+    destinationTag?: string;
+
+    /**
+     * Bitcoin enabled for RBF (Replace-by-fee is a protocol in the Bitcoin mempool that allows for the replacement of an unconfirmed transaction with another one)
+     */
+    isRbf?: boolean;
+}
+
+export interface DestinationAddress {
+    /**
+     * Destination address
+     */
+     address?: string;
+    /**
+     * Transaction amount
+     */
+     amount?: string;
 }
 
 export interface TxKeyResult {
@@ -606,6 +717,11 @@ export interface OneTransactionsResponse {
     sourceAddress: string;
 
     /**
+     * Source address list
+     */
+    sourceAddressList: Array<SourceAddress>;
+
+    /**
      * Destination account key
      */
     destinationAccountKey: string;
@@ -619,6 +735,11 @@ export interface OneTransactionsResponse {
      * Destination address
      */
     destinationAddress: string;
+
+    /**
+     * Destination address list
+     */
+    destinationAddressList?: Array<DestinationAddress>;
 
     /**
      * If the destination is tag or memo type, then this value is empty
@@ -785,6 +906,11 @@ export interface TransactionsFeeRateRequest {
     destinationAddress?: string;
 
     /**
+     * Destination address list
+     */
+    destinationAddressList?: Array<DestinationAddress>;
+
+    /**
      * Transfer amount is required to calculate gas limit more accurately when using EVM chains. When using UTXO, providing the amount can estimate transaction fees more accurately. If no amount is provided, the calculation is based on the maximum UTXO quantity. When using SUI, providing the amount can estimate gas budget more accurately
      */
     value?: string;
@@ -867,6 +993,16 @@ export interface FeeRate {
      * SUI gasBudget
      */
     gasBudget: string;
+
+    /**
+     * The gas price the transaction sender is willing to pay, similar to EVM gasPrice
+     */
+    gasUnitPrice?: string;
+
+    /**
+     * The maximum number of gas units that the transaction sender is willing to spend to execute the transaction, similar to EVM gasLimit
+     */
+    maxGasAmount?: string;
 }
 
 export interface CancelTransactionRequest {
@@ -1015,6 +1151,13 @@ export class TransactionApi {
      */
     async createTransactions(request: CreateTransactionRequest): Promise<TxKeyResult> {
         return await this.client.doRequest<CreateTransactionRequest, TxKeyResult>('/v2/transactions/create', request);
+    }
+
+    /**
+     * For UTXOs that natively support multiple OUTPUTs, this interface allows a single transaction to transfer funds to multiple destination addresses simultaneously.(To use the Co-Signer, please use version 1.5.9 or higher)
+     */
+    async createTransactionsUTXOMultidest(request: CreateTransactionsUTXOMultidestRequest): Promise<TxKeyResult> {
+        return await this.client.doRequest<CreateTransactionsUTXOMultidestRequest, TxKeyResult>('/v1/transactions/utxo/multidest/create', request);
     }
 
     /**

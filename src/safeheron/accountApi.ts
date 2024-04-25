@@ -179,6 +179,14 @@ export interface BatchCreateAccountRequest {
     accountName?: string;
 
     /**
+     * Display status in Safeheron App
+     * True: not display
+     * False: display
+     * Default: true
+     */
+    hiddenOnUI: boolean;
+
+    /**
      * Number of wallets to be created, greater than 0, less than 100
      */
     count: number;

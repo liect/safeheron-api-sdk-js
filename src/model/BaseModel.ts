@@ -4,6 +4,8 @@ export interface BaseRequest {
   key?: string;
   sig?: string;
   bizContent?: string;
+  rsaType?: string;
+  aesType?: string;
 }
 
 export interface BaseResponse {
@@ -13,6 +15,8 @@ export interface BaseResponse {
   message: string;
   timestamp: string;
   sig: string;
+  rsaType?: string;
+  aesType?: string;
 }
 
 export interface CoSignerCallBack {
@@ -20,6 +24,8 @@ export interface CoSignerCallBack {
   key: string;
   timestamp: string;
   sig: string;
+  rsaType?: string;
+  aesType?: string;
 }
 
 export interface CoSignerResponse {
@@ -36,4 +42,6 @@ export interface WebHook {
   key: string;
   timestamp: string;
   sig: string;
+  rsaType?: string;
+  aesType?: string;
 }
