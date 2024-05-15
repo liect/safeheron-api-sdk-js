@@ -589,7 +589,8 @@ export class AccountApi {
     }
 
     /**
-     * One Accounts
+     * Retrieve a Single Wallet Account
+     * Retrieve a single wallet account in the team by providing accountKey.
      */
     async oneAccounts(request: OneAccountRequest): Promise<AccountResponse> {
         return await this.client.doRequest<OneAccountRequest, AccountResponse>('/v1/account/one', request);
