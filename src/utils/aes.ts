@@ -4,7 +4,7 @@ export class AES {
 
     CBC:string = "CBC_PKCS7Padding"
 
-    GCM: string = "GCM_NoPadding"
+    GCM: string = "GCM_NOPADDING"
 
     algorithm: string = 'aes-256-cbc';
 

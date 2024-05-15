@@ -30,6 +30,13 @@ export interface ListAccountRequest extends PageSearch {
     nameSuffix?: string;
 }
 
+export interface OneAccountRequest  {
+    /**
+     * Wallet account key
+     */
+    accountKey: string;
+}
+
 export interface PageResult<T> {
     /**
      * Page number
@@ -578,7 +585,14 @@ export class AccountApi {
      * Filter wallet account lists in team according to different combinations of conditions.
      */
     async listAccounts(request: ListAccountRequest): Promise<PageResult<AccountResponse>> {
-        return await this.client.doRequest<CreateAccountRequest, PageResult<AccountResponse>>('/v1/account/list', request);
+        return await this.client.doRequest<ListAccountRequest, PageResult<AccountResponse>>('/v1/account/list', request);
+    }
+
+    /**
+     * One Accounts
+     */
+    async oneAccounts(request: OneAccountRequest): Promise<AccountResponse> {
+        return await this.client.doRequest<OneAccountRequest, AccountResponse>('/v1/account/one', request);
     }
 
     /**
