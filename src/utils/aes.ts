@@ -3,7 +3,7 @@ import type {Encoding, BinaryLike, CipherGCMTypes, CipherKey} from 'crypto'
 
 export class AES {
 
-    CBC:string = "CBC_PKCS7Padding"
+    CBC:string = "CBC_PKCS7PADDING"
 
     GCM: string = "GCM_NOPADDING"
 
