@@ -6,6 +6,8 @@ PRIVATE_KEY_PEM_FILE=
 APIKEY_PUBLIC_KEY_PEM_FILE=
 # Safheron api url
 BASE_URL=
+# RequestTimeout (Millisecond), Default: 10000
+requestTimeout=
 # Wallet Account key
 ACCOUNT_KEY=
 # Goerli testnet token address in wallet account
