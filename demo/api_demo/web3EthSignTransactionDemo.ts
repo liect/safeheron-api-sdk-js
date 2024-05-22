@@ -75,7 +75,7 @@ async function main() {
         apiKey,
         rsaPrivateKey: yourPrivateKey,
         safeheronRsaPublicKey: apiKeyPublicKey,
-        requestTimeout: 10000
+        requestTimeout: 20000
     });
 
     const request: CreateWeb3EthSignTransactionRequest = {

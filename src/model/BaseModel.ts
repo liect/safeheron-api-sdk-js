@@ -37,6 +37,17 @@ export interface CoSignerResponse {
   bizContent?: string;
 }
 
+export interface CoSignerResponseWithNewCryptoType {
+  code: number;
+  timestamp: string;
+  message: string;
+  key?: string;
+  sig?: string;
+  bizContent?: string;
+  rsaType?: string;
+  aesType?: string;
+}
+
 export interface WebHook {
   bizContent: string;
   key: string;
