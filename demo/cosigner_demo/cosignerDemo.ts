@@ -38,7 +38,7 @@ async function main() {
         })
         console.log(`Decrypt coSignerBizContent: ${coSignerCallBack}`);
 
-        const coSignerResponse=  converter.convertCoSignerResponse({
+        const coSignerResponse=  converter.convertCoSignerResponseWithNewCryptoType({
             approve: true,
             txKey: 'TxKey that needs to be approved'
         })

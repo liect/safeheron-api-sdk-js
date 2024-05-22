@@ -32,7 +32,7 @@ async function main() {
             apiKey,
             rsaPrivateKey: yourPrivateKey,
             safeheronRsaPublicKey: apiKeyPublicKey,
-            requestTimeout: 10000
+            requestTimeout: 20000
         });
 
         const coinResult = await coinApi.coinList();

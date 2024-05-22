@@ -1,7 +1,7 @@
 import {SafeheronCoSignerConfig} from '../config';
 import {RSA} from '../utils/rsa';
 import {AES} from '../utils/aes';
-import {CoSignerCallBack, CoSignerResponse} from '../model/BaseModel';
+import {CoSignerCallBack, CoSignerResponse, CoSignerResponseWithNewCryptoType} from '../model/BaseModel';
 import crypto from "crypto";
 
 export class CoSignerConverter {
@@ -15,6 +15,7 @@ export class CoSignerConverter {
         this.rsa = new RSA(config.apiPubKey, config.bizPrivKey);
     }
 
+    // It has been Deprecated,Please use convertCoSignerResponseWithNewCryptoType
     convertCoSignerResponse(data: any): CoSignerResponse {
 
         const key = crypto.randomBytes(32);
@@ -43,6 +44,39 @@ export class CoSignerConverter {
         }
         const signSrc = paramStr.join("&");
         req.sig = this.rsa.sign(signSrc);
+        return req;
+    }
+
+    convertCoSignerResponseWithNewCryptoType(data: any): CoSignerResponseWithNewCryptoType {
+
+        const key = crypto.randomBytes(32);
+        const iv = crypto.randomBytes(16);
+
+        // Use Safeheron RSA public key to encrypt request's aesKey and aesIv
+        const encryptKeyAndIv = this.rsa.encryptOAEP(Buffer.concat([key, iv]));
+
+        const req: CoSignerResponseWithNewCryptoType = {
+            message: 'SUCCESS',
+            code: 200,
+            timestamp: String(new Date().getTime()),
+            key: encryptKeyAndIv,
+        };
+
+        if (data != null) {
+            // Use AES to encrypt request data
+            req.bizContent = this.aes.encryptGCM(JSON.stringify(data), key, iv);
+        }
+
+        // Sign the request data with your RSA private key
+        let paramStr = [];
+        let reqMap = new Map(Object.entries(req));
+        for (const key of Array.from(reqMap.keys()).slice().sort()) {
+            paramStr.push(key + "=" + reqMap.get(key))
+        }
+        const signSrc = paramStr.join("&");
+        req.sig = this.rsa.sign(signSrc);
+        req.rsaType = this.rsa.ECB_OAEP;
+        req.aesType = this.aes.GCM;
         return req;
     }
 
