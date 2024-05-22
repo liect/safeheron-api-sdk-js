@@ -3,8 +3,6 @@ import type {Encoding, BinaryLike, CipherGCMTypes, CipherKey} from 'crypto'
 
 export class AES {
 
-    CBC:string = "CBC_PKCS7PADDING"
-
     GCM: string = "GCM_NOPADDING"
 
     algorithm: string = 'aes-256-cbc';

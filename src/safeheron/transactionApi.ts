@@ -554,7 +554,7 @@ export interface CreateTransactionRequest {
     balanceVerifyType?: string;
 }
 
-export interface CreateTransactionsUTXOMultidestRequest {
+export interface CreateTransactionsUTXOMultiDestRequest {
     /**
      * Merchant unique business ID (100 characters max)
      */
@@ -1156,8 +1156,8 @@ export class TransactionApi {
     /**
      * For UTXOs that natively support multiple OUTPUTs, this interface allows a single transaction to transfer funds to multiple destination addresses simultaneously.(To use the Co-Signer, please use version 1.5.9 or higher)
      */
-    async createTransactionsUTXOMultidest(request: CreateTransactionsUTXOMultidestRequest): Promise<TxKeyResult> {
-        return await this.client.doRequest<CreateTransactionsUTXOMultidestRequest, TxKeyResult>('/v1/transactions/utxo/multidest/create', request);
+    async createTransactionsUTXOMultiDest(request: CreateTransactionsUTXOMultiDestRequest): Promise<TxKeyResult> {
+        return await this.client.doRequest<CreateTransactionsUTXOMultiDestRequest, TxKeyResult>('/v1/transactions/utxo/multidest/create', request);
     }
 
     /**

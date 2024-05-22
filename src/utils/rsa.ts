@@ -1,7 +1,6 @@
 import crypto from 'crypto';
 
 export class RSA {
-  RSA:string = "RSA"
   ECB_OAEP: string = "ECB_OAEP"
 
   privateKey: string;
