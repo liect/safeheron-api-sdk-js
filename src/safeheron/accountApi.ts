@@ -30,6 +30,13 @@ export interface ListAccountRequest extends PageSearch {
     nameSuffix?: string;
 }
 
+export interface OneAccountRequest  {
+    /**
+     * Wallet account key
+     */
+    accountKey: string;
+}
+
 export interface PageResult<T> {
     /**
      * Page number
@@ -177,6 +184,14 @@ export interface BatchCreateAccountRequest {
      * The prefix of wallet account name, 30 characters max
      */
     accountName?: string;
+
+    /**
+     * Display status in Safeheron App
+     * True: not display
+     * False: display
+     * Default: true
+     */
+    hiddenOnUI: boolean;
 
     /**
      * Number of wallets to be created, greater than 0, less than 100
@@ -570,7 +585,15 @@ export class AccountApi {
      * Filter wallet account lists in team according to different combinations of conditions.
      */
     async listAccounts(request: ListAccountRequest): Promise<PageResult<AccountResponse>> {
-        return await this.client.doRequest<CreateAccountRequest, PageResult<AccountResponse>>('/v1/account/list', request);
+        return await this.client.doRequest<ListAccountRequest, PageResult<AccountResponse>>('/v1/account/list', request);
+    }
+
+    /**
+     * Retrieve a Single Wallet Account
+     * Retrieve a single wallet account in the team by providing accountKey.
+     */
+    async oneAccounts(request: OneAccountRequest): Promise<AccountResponse> {
+        return await this.client.doRequest<OneAccountRequest, AccountResponse>('/v1/account/one', request);
     }
 
     /**

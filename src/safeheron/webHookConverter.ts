@@ -23,9 +23,19 @@ export class WebHookConverter {
         }
 
         // Use your RSA private key to decrypt response's aesKey and aesIv
-        const keyAndIv = this.rsa.decrypt(data.key);
-
+        let keyAndIv;
+        if(this.rsa.ECB_OAEP ==data.rsaType){
+            keyAndIv = this.rsa.decryptOAEP(data.key);
+        }else {
+            keyAndIv = this.rsa.decrypt(data.key);
+        }
         // Use AES to decrypt bizContent
-        return this.aes.decrypt(data.bizContent, keyAndIv);
+        let webHookContent;
+        if(this.aes.GCM == data.aesType){
+            webHookContent = this.aes.decryptGCM(data.bizContent, keyAndIv);
+        }else {
+            webHookContent =this.aes.decrypt(data.bizContent, keyAndIv);
+        }
+        return webHookContent;
     }
 }

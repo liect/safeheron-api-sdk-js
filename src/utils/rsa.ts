@@ -1,6 +1,8 @@
 import crypto from 'crypto';
 
 export class RSA {
+  ECB_OAEP: string = "ECB_OAEP"
+
   privateKey: string;
   publicKey: string;
 
@@ -21,6 +23,20 @@ export class RSA {
     // Base64 encode
     return res.toString('base64');
   }
+
+  encryptOAEP(data: string | Buffer): string {
+    const res = crypto.publicEncrypt(
+        {
+          key: this.publicKey,
+          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+          oaepHash:'sha256'
+        },
+        Buffer.from(data),
+    );
+
+    // Base64 encode
+    return res.toString('base64');
+  }
   decrypt(data: string) {
     const plainBuffer = crypto.privateDecrypt(
       {
@@ -28,6 +44,19 @@ export class RSA {
         padding: crypto.constants.RSA_PKCS1_PADDING,
       },
       Buffer.from(data, 'base64'),
+    );
+
+    return plainBuffer;
+  }
+
+  decryptOAEP(data: string) {
+    const plainBuffer = crypto.privateDecrypt(
+        {
+          key: this.privateKey,
+          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+          oaepHash:'sha256'
+        },
+        Buffer.from(data, 'base64'),
     );
 
     return plainBuffer;

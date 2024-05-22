@@ -21,7 +21,7 @@ export class Converter {
         const iv = crypto.randomBytes(16);
 
         // Use Safeheron RSA public key to encrypt request's aesKey and aesIv
-        const encryptKeyAndIv = this.rsa.encrypt(Buffer.concat([key, iv]));
+        const encryptKeyAndIv = this.rsa.encryptOAEP(Buffer.concat([key, iv]));
 
         const req: BaseRequest = {
             apiKey: this.config.apiKey,
@@ -32,7 +32,7 @@ export class Converter {
 
         if (data != null) {
             // Use AES to encrypt request data
-            req.bizContent = this.aes.encrypt(JSON.stringify(data), key, iv);
+            req.bizContent = this.aes.encryptGCM(JSON.stringify(data), key, iv);
         }
 
         // Sign the request data with your RSA private key
@@ -43,6 +43,8 @@ export class Converter {
         }
         const signSrc = paramStr.join("&");
         req.sig = this.rsa.sign(signSrc);
+        req.rsaType = this.rsa.ECB_OAEP;
+        req.aesType = this.aes.GCM;
         return req;
     }
 
@@ -53,11 +55,20 @@ export class Converter {
         if (!verifyRes) {
             throw new Error('response signature verification failed');
         }
-
         // Use your RSA private key to decrypt response's aesKey and aesIv
-        const keyAndIv = this.rsa.decrypt(data.key);
-
+        let keyAndIv;
+        if(this.rsa.ECB_OAEP ==data.rsaType){
+            keyAndIv = this.rsa.decryptOAEP(data.key);
+        }else {
+            keyAndIv = this.rsa.decrypt(data.key);
+        }
         // Use AES to decrypt bizContent
-        return this.aes.decrypt(data.bizContent, keyAndIv);
+        let responseContent;
+        if(this.aes.GCM == data.aesType){
+            responseContent = this.aes.decryptGCM(data.bizContent, keyAndIv);
+        }else {
+            responseContent =this.aes.decrypt(data.bizContent, keyAndIv);
+        }
+        return responseContent;
     }
 }

@@ -32,14 +32,15 @@ yarn add @safeheron/api-sdk
         baseUrl: 'https://api.safeheron.vip',
         apiKey: 'd1ad6******a572e7',
         // Here are two configuration options:
-        // 1. Configure the path to the private key file, for example: file:/path/to/your/private/key/file.pem
-        // 2. Configure the private key content in string format, for example: -----BEGIN PRIVATE KEY-----\nMIIJQgIBADANBgkqhkiG****ICAQDidDHYV73U4cub\n-----END PUBLIC KEY-----
+        // 1. Configure the path to the private key file, the path must contain the "file:" prefix, for example: file:/path/to/your/private/key/file.pem
+        // 2. Configure the private key content in string format, for example: -----BEGIN PRIVATE KEY-----\nMIIJQgIBADANBgkqhkiG****ICAQDidDHYV73U4cub\n-----END PRIVATE KEY-----
         rsaPrivateKey: "file:/path/to/your/private/key/file.pem",
         // You can get safeheronRsaPublicKey from Safeheron Web Console. Here are two configuration options:
-        // 1. Save safeheronRsaPublicKey to a file and configure the path to the file, for example: file:/path/to/safeheron/public/key/file.pem
+        // 1. Save safeheronRsaPublicKey to a file and configure the path to the file, the path must contain the "file:" prefix, for example: file:/path/to/safeheron/public/key/file.pem
         // 2. Directly paste the public key that you copied from the web console, for example: MIICIjANBgkqhki****8eUQV63wRS0CAwEAAQ==
         safeheronRsaPublicKey: "MIICIjANBgkqhki****8eUQV63wRS0CAwEAAQ==",
-        requestTimeout: 3000,
+        // RequestTimeout (Millisecond), Default: 10000
+        requestTimeout: 10000
     });
   ```
 * Call api with `AccountApi`
@@ -65,6 +66,8 @@ yarn add @safeheron/api-sdk
   APIKEY_PUBLIC_KEY_PEM_FILE= 
   # Safheron api url
   BASE_URL=https://api.safeheron.vip
+  # RequestTimeout (Millisecond), Default: 10000
+  requestTimeout: 10000
   ```
 * Run the test
   ```bash
@@ -84,6 +87,8 @@ yarn add @safeheron/api-sdk
   APIKEY_PUBLIC_KEY_PEM_FILE= 
   # Safheron api url
   BASE_URL=https://api.safeheron.vip
+  # RequestTimeout (Millisecond), Default: 10000
+  requestTimeout: 10000
   # Wallet Account key
   ACCOUNT_KEY=
   # To address
@@ -107,6 +112,8 @@ yarn add @safeheron/api-sdk
   APIKEY_PUBLIC_KEY_PEM_FILE=
   # Safeheron api url
   BASE_URL=https://api.safeheron.vip
+  # RequestTimeout (Millisecond), Default: 10000
+  requestTimeout: 10000
   # Wallet Account key
   ACCOUNT_KEY=
   # Goerli testnet token address in wallet account
