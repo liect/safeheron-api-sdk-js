@@ -19,7 +19,7 @@ export class WebHookConverter {
         const content = `bizContent=${data.bizContent}&key=${data.key}&timestamp=${data.timestamp}`;
         const verifyRes = this.rsa.verify(content, data.sig);
         if (!verifyRes) {
-            throw new Error('response signature verification failed');
+            throw new Error('webhook signature verification failed');
         }
 
         // Use your RSA private key to decrypt response's aesKey and aesIv

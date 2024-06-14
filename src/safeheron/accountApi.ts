@@ -229,7 +229,7 @@ export interface BatchUpdateAccountTagRequest {
     /**
      * Wallet account key
      */
-    accountKey: string;
+    accountKeyList: Array<string>;
 
     /**
      * Account tag
