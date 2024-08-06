@@ -161,7 +161,7 @@ export interface ListMPCSignTransactionsRequest extends LimitSearch {
 }
 
 
-export class MCPSignApi {
+export class MPCSignApi {
 
     private client: SafeheronClient;
 

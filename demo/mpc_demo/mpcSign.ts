@@ -8,7 +8,7 @@ import path from 'path'
 import rc from 'rc';
 import {
     CreateMPCSignTransactionRequest,
-    MCPSignApi,
+    MPCSignApi,
     OneMPCSignTransactionsRequest
 } from "../../src/safeheron/mpcSignApi";
 
@@ -53,7 +53,7 @@ function delay(num: number) {
     })
 };
 
-async function requestMpcSign(mpcSignApi: MCPSignApi, hash: string, accountKey: string): Promise<string> {
+async function requestMpcSign(mpcSignApi: MPCSignApi, hash: string, accountKey: string): Promise<string> {
 
     const request: CreateMPCSignTransactionRequest = {
         customerRefId: uuid(),
@@ -69,7 +69,7 @@ async function requestMpcSign(mpcSignApi: MCPSignApi, hash: string, accountKey: 
     return txResult.txKey;
 }
 
-async function retrieveSig(mpcSignApi: MCPSignApi, txKey: string): Promise<string> {
+async function retrieveSig(mpcSignApi: MPCSignApi, txKey: string): Promise<string> {
     // wait and get sig from "v1/transactions/mpcsign/one" api
     const retrieveRequest: OneMPCSignTransactionsRequest = {
         txKey
@@ -143,7 +143,7 @@ async function main() {
     const hash = utils.keccak256(serialize);
 
 
-    const mpcSignApi: MCPSignApi = new MCPSignApi({
+    const mpcSignApi: MPCSignApi = new MPCSignApi({
         baseUrl: getConfigValue('BASE_URL'),
         apiKey,
         rsaPrivateKey: yourPrivateKey,

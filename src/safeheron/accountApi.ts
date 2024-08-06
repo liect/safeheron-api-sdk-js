@@ -23,7 +23,7 @@ export interface ListAccountRequest extends PageSearch {
     /**
      * Filter the response based on this account name prefix
      */
-    namePrefix?: number;
+    namePrefix?: string;
     /**
      * Filter the response based on this account name suffix
      */
