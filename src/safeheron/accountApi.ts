@@ -28,6 +28,10 @@ export interface ListAccountRequest extends PageSearch {
      * Filter the response based on this account name suffix
      */
     nameSuffix?: string;
+    /**
+     * Merchant unique business ID (100 characters max)
+     */
+    customerRefId?: string;
 }
 
 export interface OneAccountRequest  {
@@ -35,6 +39,11 @@ export interface OneAccountRequest  {
      * Wallet account key
      */
     accountKey: string;
+
+    /**
+     * Merchant unique business ID (100 characters max)
+     */
+    customerRefId?: string;
 }
 
 export interface PageResult<T> {
@@ -70,6 +79,11 @@ export interface AccountResponse {
      * Account name
      */
     accountName: string;
+
+    /**
+     * Merchant unique business ID
+     */
+    customerRefId?: string;
 
     /**
      * Account index
@@ -120,6 +134,13 @@ export interface CreateAccountRequest {
      * Account name, within 30 characters
      */
     accountName?: string;
+
+    /**
+     * Merchant unique business ID (100 characters max)
+     * The customerRefId uniquely represents a wallet. In the case of duplicate customerRefId values (for example, when resubmitting due to request timeouts or other errors), the data returned by the interface will remain consistent
+     */
+    customerRefId?: string;
+
     /**
      * Whether display in Safeheron Console
      * True: not display
@@ -175,6 +196,10 @@ export interface CreateAccountResponse {
              * Address type
              */
             addressType: string;
+            /**
+             * BIP44 derivation path
+             */
+            derivePath: string;
         }>;
     }>;
 }
@@ -269,6 +294,11 @@ export interface CreateAccountCoinResponse {
      * addressType
      */
     addressType: string;
+
+    /**
+     * BIP44 derivation path
+     */
+    derivePath: string;
 }
 
 export interface BatchCreateAccountCoinRequest {
@@ -310,6 +340,11 @@ export interface AddressResult {
      * addressType
      */
     addressType: string;
+
+    /**
+     * BIP44 derivation path
+     */
+    derivePath: string;
 }
 
 export interface ListAccountCoinRequest {
@@ -412,6 +447,11 @@ export interface AccountCoinResponse {
         addressType: string;
 
         /**
+         * BIP44 derivation path
+         */
+        derivePath: string;
+
+        /**
          * The balance of this coin address
          */
         addressBalance: string;
@@ -471,6 +511,11 @@ export interface InfoAccountCoinAddressResponse {
     addressType: string;
 
     /**
+     * BIP44 derivation path
+     */
+    derivePath: string;
+
+    /**
      * The balance of the coin address
      */
     addressBalance: string;
@@ -520,6 +565,11 @@ export interface CreateAccountCoinAddressResponse {
      * addressType
      */
     addressType: string;
+
+    /**
+     * BIP44 derivation path
+     */
+    derivePath: string;
 }
 
 export interface BatchCreateAccountCoinUTXORequest {
@@ -558,6 +608,11 @@ export interface BatchCreateAccountCoinUTXOResponse {
          * addressType
          */
         addressType: string;
+
+        /**
+         * BIP44 derivation path
+         */
+        derivePath: string;
     }>;
 
     /**

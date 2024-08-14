@@ -18,6 +18,12 @@ export interface CreateWeb3AccountRequest {
      * Default: false
      */
     hiddenOnUI?: boolean;
+
+    /**
+     * Merchant unique business ID (100 characters max)
+     * The customerRefId uniquely represents a wallet. In the case of duplicate customerRefId values (for example, when resubmitting due to request timeouts or other errors), the data returned by the interface will remain consistent
+     */
+    customerRefId?: string;
 }
 
 export interface Web3AccountResponse {
@@ -61,6 +67,11 @@ export interface Web3AccountResponse {
          * Blockchain type
          */
         blockchainType: string;
+
+        /**
+         * BIP44 derivation path
+         */
+        derivePath: string;
 
         /**
          * Coin receiving address
@@ -115,6 +126,11 @@ export interface BatchCreateWeb3AccountResponse {
         blockchainType: string;
 
         /**
+         * BIP44 derivation path
+         */
+        derivePath: string;
+
+        /**
          * Coin receiving address
          */
         address: string;
@@ -126,7 +142,10 @@ export interface ListWeb3AccountRequest extends LimitSearch {
      * Filter the response based on this account name prefix
      */
     namePrefix?: string;
-
+    /**
+     * Merchant unique business ID (100 characters max)
+     */
+    customerRefId?: string;
 }
 
 export interface CreateWeb3EthSignRequest {
