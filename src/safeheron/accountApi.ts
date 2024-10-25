@@ -34,7 +34,7 @@ export interface ListAccountRequest extends PageSearch {
     customerRefId?: string;
 }
 
-export interface OneAccountRequest  {
+export interface OneAccountRequest {
     /**
      * Wallet account key
      */
@@ -153,7 +153,7 @@ export interface CreateAccountRequest {
      */
     accountTag?: string;
     /**
-     * 	Coin key list, 20 array elements max
+     *    Coin key list, 20 array elements max
      */
     coinKeyList?: Array<string>;
 }
@@ -184,6 +184,16 @@ export interface CreateAccountResponse {
          * Coin key
          */
         coinKey: string;
+
+        /**
+         * The unique identifier of the address group
+         */
+        addressGroupKey: string;
+
+        /**
+         * Address group name
+         */
+        addressGroupName: string;
         /**
          * Address list
          */
@@ -284,6 +294,18 @@ export interface CreateAccountCoinRequest {
     accountKey: string;
 }
 
+export interface CreateAccountCoinV2Request {
+    /**
+     * Coin key list, 20 array elements max
+     */
+    coinKeyList: Array<string>;
+
+    /**
+     * Account key
+     */
+    accountKey: string;
+}
+
 export interface CreateAccountCoinResponse {
     /**
      * Coin receiving address
@@ -299,6 +321,49 @@ export interface CreateAccountCoinResponse {
      * BIP44 derivation path
      */
     derivePath: string;
+}
+
+export interface CreateAccountCoinV2Response {
+    /**
+     * Wallet account key
+     */
+    accountKey: string;
+
+    /**
+     * Coin address list
+     */
+    coinAddressList: Array<{
+        /**
+         * Coin key
+         */
+        coinKey: string;
+        /**
+         * The unique identifier of the address group
+         */
+        addressGroupKey: string;
+
+        /**
+         * Address group name
+         */
+        addressGroupName: string;
+        /**
+         * Address list
+         */
+        addressList: Array<{
+            /**
+             * Coin receiving address
+             */
+            address: string;
+            /**
+             * Address type
+             */
+            addressType: string;
+            /**
+             * BIP44 derivation path
+             */
+            derivePath: string;
+        }>;
+    }>;
 }
 
 export interface BatchCreateAccountCoinRequest {
@@ -328,6 +393,16 @@ export interface BatchCreateAccountCoinResponse {
      * Account key
      */
     accountKey: string;
+
+    /**
+     * The unique identifier of the address group
+     */
+    addressGroupKey: string;
+
+    /**
+     * Address group name
+     */
+    addressGroupName: string;
 }
 
 export interface AddressResult {
@@ -468,6 +543,11 @@ export interface ListAccountCoinAddressRequest extends PageSearch {
      * Account key
      */
     accountKey: string;
+
+    /**
+     * Merchant unique business ID (100 characters max) when adding an address group
+     */
+    customerRefId: string;
 }
 
 export interface AccountCoinAddressResponse {
@@ -480,6 +560,11 @@ export interface AccountCoinAddressResponse {
      * Address group name
      */
     addressGroupName: string;
+
+    /**
+     * Merchant unique business ID when adding an address group
+     */
+    customerRefId: string;
 
     /**
      * Address list
@@ -553,6 +638,12 @@ export interface CreateAccountCoinAddressRequest {
      * Address group name, 30 characters max
      */
     addressGroupName: string;
+
+    /**
+     * Merchant unique business ID (100 characters max)
+     * The customerRefId uniquely represents an address group. In the case of duplicate customerRefId values (for example, when resubmitting due to request timeouts or other errors), the data returned by the interface will remain consistent
+     */
+    customerRefId: string;
 }
 
 export interface CreateAccountCoinAddressResponse {
@@ -570,6 +661,35 @@ export interface CreateAccountCoinAddressResponse {
      * BIP44 derivation path
      */
     derivePath: string;
+}
+
+export interface CreateAccountCoinAddressV2Response {
+    /**
+     * The unique identifier of the address group
+     */
+    addressGroupKey: string;
+
+    /**
+     * Address group name
+     */
+    addressGroupName: string;
+    /**
+     * Address list
+     */
+    addressList: Array<{
+        /**
+         * Coin receiving address
+         */
+        address: string;
+        /**
+         * Address type
+         */
+        addressType: string;
+        /**
+         * BIP44 derivation path
+         */
+        derivePath: string;
+    }>;
 }
 
 export interface BatchCreateAccountCoinUTXORequest {
@@ -619,6 +739,16 @@ export interface BatchCreateAccountCoinUTXOResponse {
      * Account key
      */
     accountKey: string;
+
+    /**
+     * The unique identifier of the address group
+     */
+    addressGroupKey: string;
+
+    /**
+     * Address group name
+     */
+    addressGroupName: string;
 }
 
 export class AccountApi {
@@ -692,12 +822,20 @@ export class AccountApi {
     }
 
     /**
-     * Add Coins to a Wallet Account
+     * Add Coins to a Wallet Account V1
      * Add a new coin to your wallet account, while generating the default address group for the added coin. Once successfully completed, it will return the address information of the newly created default address group. In case the added currency already exists within the account, it will promptly return the existing default address group information for that coin.
      * In a wallet account, UTXO-based cryptocurrencies can have multiple address groups, while other types of cryptocurrencies usually have only one. To check whether a particular cryptocurrency supports the addition of multiple address groups, simply check the 'isMultipleAddress' parameter through the Coin List.
      */
     async createAccountCoin(request: CreateAccountCoinRequest): Promise<Array<CreateAccountCoinResponse>> {
         return await this.client.doRequest<CreateAccountCoinRequest, Array<CreateAccountCoinResponse>>('/v1/account/coin/create', request);
+    }
+
+    /**
+     * Add Coins to a Wallet Account V2
+     * Add a new coin to your wallet account, and it will generate address information for the added coin. If the added currency already exists within the account, it will promptly return the existing address information for that coin.
+     */
+    async createAccountCoinV2(request: CreateAccountCoinV2Request): Promise<CreateAccountCoinV2Response> {
+        return await this.client.doRequest<CreateAccountCoinV2Request, CreateAccountCoinV2Response>('/v2/account/coin/create', request);
     }
 
     /**
@@ -741,11 +879,19 @@ export class AccountApi {
     }
 
     /**
-     * Add Address Group for UTXO-Based Coin
+     * Add Address Group for UTXO-Based Coin V1
      * Add a new address group for UTXO-based cryptocurrencies under a wallet account. If the coin does not exist, it will be added first, followed by the new address group. The function will return the details of the added address(es).
      */
-    async createAccountCoinAddress(request: CreateAccountCoinAddressRequest): Promise<CreateAccountCoinAddressResponse> {
-        return await this.client.doRequest<CreateAccountCoinAddressRequest, CreateAccountCoinAddressResponse>('/v1/account/coin/address/create', request);
+    async createAccountCoinAddress(request: CreateAccountCoinAddressRequest): Promise<Array<CreateAccountCoinAddressResponse>> {
+        return await this.client.doRequest<CreateAccountCoinAddressRequest, Array<CreateAccountCoinAddressResponse>>('/v1/account/coin/address/create', request);
+    }
+
+    /**
+     * Add Address Group for UTXOs V2
+     * Add a new address group for UTXO-based cryptocurrencies under a wallet account.If the coin has not been added to the wallet, it will be added automatically.
+     */
+    async createAccountCoinAddressV2(request: CreateAccountCoinAddressRequest): Promise<CreateAccountCoinAddressV2Response> {
+        return await this.client.doRequest<CreateAccountCoinAddressRequest, CreateAccountCoinAddressV2Response>('/v2/account/coin/address/create', request);
     }
 
     /**

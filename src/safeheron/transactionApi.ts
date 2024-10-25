@@ -288,6 +288,11 @@ export interface SourceAddress {
      * Source address
      */
     address?: string;
+
+    /**
+     * The unique identifier of the address group of the source address, this field is only returned when the transaction source account type is VAULT_ACCOUNT
+     */
+    addressGroupKey?: string;
 }
 
 export interface LimitSearch {
@@ -631,6 +636,11 @@ export interface DestinationAddress {
      * Transaction amount
      */
      amount?: string;
+
+    /**
+     * The unique identifier of the address group of the destination address, this field is only returned when the destination account type is VAULT_ACCOUNT
+     */
+    addressGroupKey?: string;
 }
 
 export interface TxKeyResult {
