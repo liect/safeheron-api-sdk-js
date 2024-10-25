@@ -298,7 +298,7 @@ export class CoinApi {
      * Retrieve Current Block Height for Currency
      * Retrieve the current block height for a specific cryptocurrency by providing its key.
      */
-    async coinBlockHeight(request: CoinBlockHeightRequest): Promise<CoinBlockHeightResponse> {
-        return await this.client.doRequest<CoinBlockHeightRequest, CoinBlockHeightResponse>('/v1/coin/block/height', request);
+    async coinBlockHeight(request: CoinBlockHeightRequest): Promise<Array<CoinBlockHeightResponse>> {
+        return await this.client.doRequest<CoinBlockHeightRequest, Array<CoinBlockHeightResponse>>('/v1/coin/block/height', request);
     }
 }
