@@ -87,6 +87,15 @@ export interface ListTransactionsV1Request extends PageSearch {
      * Filter out custom transaction amounts, excluding transaction records below a certain amount specified in USD from the query results
      */
     hideSmallAmountUsd?: string;
+
+    /**
+     * Filter transaction history by transaction direction:
+     * Default: Retrieve all types of transactions
+     * INFLOW: Retrieve inflows
+     * OUTFLOW: Retrieve outflows
+     * INTERNAL_TRANSFER: Retrieve internal transfers
+     */
+    transactionDirection?: string;
 }
 
 export interface TransactionsResponse {
@@ -281,6 +290,11 @@ export interface TransactionsResponse {
      * Creator username
      */
     createdByUserName: string;
+
+    /**
+     * Transaction Direction
+     */
+    transactionDirection: string;
 }
 
 export interface SourceAddress {
@@ -397,6 +411,15 @@ export interface ListTransactionsV2Request extends LimitSearch {
      * Filter out custom transaction amounts, excluding transaction records below a certain amount specified in USD from the query results
      */
     hideSmallAmountUsd?: string;
+
+    /**
+     * Filter transaction history by transaction direction:
+     * Default: Retrieve all types of transactions
+     * INFLOW: Retrieve inflows
+     * OUTFLOW: Retrieve outflows
+     * INTERNAL_TRANSFER: Retrieve internal transfers
+     */
+    transactionDirection?: string;
 }
 
 export interface FeeRateDto {
@@ -887,6 +910,11 @@ export interface OneTransactionsResponse {
      *     Transaction history (resulting from sped-up EVM and UTXO-based transactions); Only have a value once the current transaction has been accelerated
      */
     speedUpHistory: Array<TransactionsResponse>;
+
+    /**
+     * Transaction Direction
+     */
+    transactionDirection: string;
 }
 
 export interface TransactionsFeeRateRequest {
