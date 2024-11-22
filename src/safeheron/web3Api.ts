@@ -175,6 +175,13 @@ export interface CreateWeb3EthSignRequest {
     customerExt2?: string;
 
     /**
+     * Use custom network
+     * False: Use the network supported by Safeheron by default
+     * True: Use a custom network added through the Safeheron Browser Extension
+     */
+    useCustomNetwork?: boolean;
+
+    /**
      * Message Hash
      */
     messageHash: {
@@ -220,6 +227,13 @@ export interface CreateWeb3PersonalSignRequest {
     customerExt2?: string;
 
     /**
+     * Use custom network
+     * False: Use the network supported by Safeheron by default
+     * True: Use a custom network added through the Safeheron Browser Extension
+     */
+    useCustomNetwork?: boolean;
+
+    /**
      * Message
      */
     message: {
@@ -262,6 +276,13 @@ export interface CreateWeb3EthSignTypedDataRequest {
      * Merchant extended field (defined by merchant) shown to merchant (255 characters max)
      */
     customerExt2?: string;
+
+    /**
+     * Use custom network
+     * False: Use the network supported by Safeheron by default
+     * True: Use a custom network added through the Safeheron Browser Extension
+     */
+    useCustomNetwork?: boolean;
 
     /**
      * Message
@@ -309,6 +330,13 @@ export interface CreateWeb3EthSignTransactionRequest {
      * Merchant extended field (defined by merchant) shown to merchant (255 characters max)
      */
     customerExt2?: string;
+
+    /**
+     * Use custom network
+     * False: Use the network supported by Safeheron by default
+     * True: Use a custom network added through the Safeheron Browser Extension
+     */
+    useCustomNetwork?: boolean;
 
     /**
      * Transaction
