@@ -54,7 +54,6 @@ export interface OneWhitelistRequest {
 }
 
 
-
 export interface WhitelistResponse {
     /**
      * Whitelist unique identifier
@@ -86,6 +85,11 @@ export interface WhitelistResponse {
      * Whitelisted address
      */
     address?: string;
+
+    /**
+     * Memo of the address when creating a whitelist
+     */
+    memo?: string;
 
     /**
      * Whitelist status
@@ -132,6 +136,51 @@ export interface CreateWhitelistRequest {
      * Public blockchain address and the address format needs to meet the requirements of the chain
      */
     address?: string;
+
+    /**
+     * The memo (up to 20 characters) for the destination address, also known as a comment or tag. For the following networks, if a destination address memo was set initially, a memo matching the one in the transaction record must be provided
+     * TON: TON mainnet
+     * TON_TESTNET: TON testnet
+     */
+    memo?: string;
+
+    /**
+     * Visibility status in Safeheron App and Web Console
+     * False: Visible by default
+     * True: Invisible; the invisible whitelist can only be managed and used through the API, such as querying, modifying, and using the whitelist as the destination address when initiating transactions
+     */
+    hiddenOnUI?: boolean;
+}
+
+export interface CreateFromTransactionWhitelistRequest {
+    /**
+     * Whitelist unique name, 20 characters max
+     */
+    whitelistName?: string;
+
+    /**
+     * Transaction key
+     */
+    txKey?: string;
+
+    /**
+     * The destination address in the transaction record; case-sensitive
+     */
+    destinationAddress?: string;
+
+    /**
+     * The memo (up to 20 characters) for the destination address, also known as a comment or tag. For the following networks, if a destination address memo was set initially, a memo matching the one in the transaction record must be provided
+     * TON: TON mainnet
+     * TON_TESTNET: TON testnet
+     */
+    memo?: string;
+
+    /**
+     * Visibility status in Safeheron App and Web Console
+     * False: Visible by default
+     * True: Invisible; the invisible whitelist can only be managed and used through the API, such as querying, modifying, and using the whitelist as the destination address when initiating transactions
+     */
+    hiddenOnUI?: boolean;
 }
 
 export interface CreateWhitelistResponse {
@@ -140,7 +189,6 @@ export interface CreateWhitelistResponse {
      */
     whitelistKey: string;
 }
-
 
 
 export interface EditWhitelistRequest {
@@ -159,6 +207,13 @@ export interface EditWhitelistRequest {
      * Public blockchain address and the address format needs to meet the requirements of the chain
      */
     address: string;
+
+    /**
+     * The memo (up to 20 characters) for the destination address, also known as a comment or tag. For the following networks, if a destination address memo was set initially, a memo matching the one in the transaction record must be provided
+     * TON: TON mainnet
+     * TON_TESTNET: TON testnet
+     */
+    memo?: string;
 
     /**
      * When the whitelist is involved in a transaction approval policy, modifications will result in the new whitelist being directly applied to the approval policy. False by default, meaning that when involved in a transaction approval policy, it will not be modified.
@@ -191,7 +246,7 @@ export class WhitelistApi {
      * List Whitelist Data
      * Paginate the whitelist data based on the query criteria.
      */
-    async listAccounts(request: ListWhitelistRequest): Promise<Array<WhitelistResponse>> {
+    async listWhitelist(request: ListWhitelistRequest): Promise<Array<WhitelistResponse>> {
         return await this.client.doRequest<ListWhitelistRequest, Array<WhitelistResponse>>('/v1/whitelist/list', request);
     }
 
@@ -199,7 +254,7 @@ export class WhitelistApi {
      * Retrieve a Single Whitelist
      * Retrieve the data of a whitelist.
      */
-    async oneAccounts(request: OneWhitelistRequest): Promise<WhitelistResponse> {
+    async oneWhitelist(request: OneWhitelistRequest): Promise<WhitelistResponse> {
         return await this.client.doRequest<OneWhitelistRequest, WhitelistResponse>('/v1/whitelist/one', request);
     }
 
@@ -210,8 +265,20 @@ export class WhitelistApi {
      * Admin approval: If a custom whitelist approval process is not set, it will become effective after being approved by the team admins according to the team's decision-making process.
      * Custom whitelist approval: If a whitelist approval process is set, it will become effective after being approved according to the process.
      */
-    async createAccount(request: CreateWhitelistRequest): Promise<CreateWhitelistResponse> {
+    async createWhitelist(request: CreateWhitelistRequest): Promise<CreateWhitelistResponse> {
         return await this.client.doRequest<CreateWhitelistRequest, CreateWhitelistResponse>('/v1/whitelist/create', request);
+    }
+
+    /**
+     * Create a Whitelist Based on a Transaction
+     * Whitelist the transaction's destination address when the transaction meets the following conditions:
+     *
+     * A transfer transaction from an asset wallet; Web3 wallet transactions or MPC Sign transactions are not supported.
+     * The transaction is in a completed state as COMPLETED.
+     * The transaction's destination address is a one-time address.
+     */
+    async createFromTransactionWhitelist(request: CreateFromTransactionWhitelistRequest): Promise<CreateWhitelistResponse> {
+        return await this.client.doRequest<CreateFromTransactionWhitelistRequest, CreateWhitelistResponse>('/v1/whitelist/createFromTransaction', request);
     }
 
 

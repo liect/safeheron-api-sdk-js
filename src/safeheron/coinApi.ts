@@ -244,7 +244,7 @@ export interface CoinBlockHeightResponse {
     /**
      * Coin's current block height
      */
-    localBlockHeight: string;
+    localBlockHeight: number;
 }
 
 

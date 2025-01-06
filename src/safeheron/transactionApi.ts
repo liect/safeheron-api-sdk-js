@@ -155,6 +155,11 @@ export interface TransactionsResponse {
     destinationAddress: string;
 
     /**
+     * Memo of the destination address when creating a transaction
+     */
+    memo: string;
+
+    /**
      * Destination address list
      */
     destinationAddressList?: Array<DestinationAddress>;
@@ -552,6 +557,13 @@ export interface CreateTransactionRequest {
     destinationAddress?: string;
 
     /**
+     * The memo (up to 100 characters) for the destination address, also known as a comment or tag. This parameter is valid for transactions on the following networks:
+     * TON: TON mainnet
+     * TON_TESTNET: TON testnet
+     */
+    memo?: string;
+
+    /**
      * Destination Tag
      */
     destinationTag?: string;
@@ -655,6 +667,12 @@ export interface DestinationAddress {
      * Destination address
      */
      address?: string;
+
+    /**
+     * Memo of the destination address when creating a transaction
+     */
+    memo?: string;
+
     /**
      * Transaction amount
      */
@@ -768,6 +786,11 @@ export interface OneTransactionsResponse {
      * Destination address
      */
     destinationAddress: string;
+
+    /**
+     * Memo of the destination address when creating a transaction
+     */
+    memo?: string;
 
     /**
      * Destination address list
