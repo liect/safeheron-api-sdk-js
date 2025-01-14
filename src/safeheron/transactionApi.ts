@@ -135,6 +135,11 @@ export interface TransactionsResponse {
     sourceAddress: string;
 
     /**
+     * Source address shows potential phishing risk. Only incoming transactions on EVM chains and TRON are valid
+     */
+    isSourcePhishing: boolean;
+
+    /**
      * Source address list
      */
     sourceAddressList: Array<SourceAddress>;
@@ -153,6 +158,11 @@ export interface TransactionsResponse {
      * Destination address
      */
     destinationAddress: string;
+
+    /**
+     * Destination address shows potential phishing risk. Only outgoing transactions on EVM chains and TRON are valid
+     */
+    isDestinationPhishing: boolean;
 
     /**
      * Memo of the destination address when creating a transaction
@@ -307,6 +317,11 @@ export interface SourceAddress {
      * Source address
      */
     address?: string;
+
+    /**
+     * Source address shows potential phishing risk. Only incoming transactions on EVM chains and TRON are valid
+     */
+    isSourcePhishing: boolean;
 
     /**
      * The unique identifier of the address group of the source address, this field is only returned when the transaction source account type is VAULT_ACCOUNT
@@ -666,7 +681,12 @@ export interface DestinationAddress {
     /**
      * Destination address
      */
-     address?: string;
+    address?: string;
+
+    /**
+     * Destination address shows potential phishing risk. Only outgoing transactions on EVM chains and TRON are valid
+     */
+    isDestinationPhishing: boolean;
 
     /**
      * Memo of the destination address when creating a transaction
@@ -676,7 +696,7 @@ export interface DestinationAddress {
     /**
      * Transaction amount
      */
-     amount?: string;
+    amount?: string;
 
     /**
      * The unique identifier of the address group of the destination address, this field is only returned when the destination account type is VAULT_ACCOUNT
@@ -768,6 +788,11 @@ export interface OneTransactionsResponse {
     sourceAddress: string;
 
     /**
+     * Source address shows potential phishing risk. Only incoming transactions on EVM chains and TRON are valid
+     */
+    isSourcePhishing: boolean;
+
+    /**
      * Source address list
      */
     sourceAddressList: Array<SourceAddress>;
@@ -786,6 +811,11 @@ export interface OneTransactionsResponse {
      * Destination address
      */
     destinationAddress: string;
+
+    /**
+     * Destination address shows potential phishing risk. Only outgoing transactions on EVM chains and TRON are valid
+     */
+    isDestinationPhishing: boolean;
 
     /**
      * Memo of the destination address when creating a transaction
@@ -938,6 +968,171 @@ export interface OneTransactionsResponse {
      * Transaction Direction
      */
     transactionDirection: string;
+}
+
+export interface ApprovalDetailTransactionsRequest {
+    /**
+     * Transaction key list within 20 transaction keys
+     */
+    txKeyList: Array<string>;
+}
+
+export interface ApprovalDetailTransactionsResponse {
+    /**
+     * List of transaction approval details, excluding the following transactions:
+     * Transactions using old transaction policies
+     * Transactions that do not exist in the system
+     * Incoming fund transactions
+     */
+    approvalDetailList: Array<ApprovalDetail>;
+}
+
+export interface ApprovalDetail {
+    /**
+     * Transaction key
+     */
+    txKey: string;
+
+    /**
+     * Approval status:
+     * PENDING_APPROVAL: Pending approval
+     * APPROVED: Approved
+     * REJECTED: Rejected
+     * CANCELLED: Cancelled
+     * BLOCKED_BY_POLICY: Blocked by policy
+     * FAILED: Failed
+     */
+    approvalStatus: string;
+
+    /**
+     * Name of triggered policy
+     */
+    policyName: string;
+
+    /**
+     * Approval progress details
+     */
+    approvalProgress: ApprovalProgress;
+}
+
+export interface ApprovalProgress {
+    /**
+     * Approval progress details on the recipient end.
+     * This field is only returned when the receiving address is Connect and the counterparty has set up incoming funds approval (except when the transaction approval status is BLOCKED_BY_POLICY)
+     */
+    recipientApproval?: RecipientApproval;
+
+    /**
+     * Approval progress. Proceeds to team approval after Connect recipient approval (if any) is completed.
+     */
+    teamApproval: Array<TeamApproval>;
+}
+
+export interface RecipientApproval {
+    /**
+     * Recipient Connect ID
+     */
+    connectId: string;
+
+    /**
+     * Recipient Connect profile name
+     */
+    name: string;
+
+    /**
+     * Approval status on the recipient end:
+     * PENDING_APPROVAL: Pending approval
+     * APPROVED: Approved
+     * REJECTED: Rejected
+     * CANCELLED: Approval cancelled
+     */
+    approvalStatus: string;
+}
+
+export interface TeamApproval {
+    /**
+     * SINGLE: Single transaction limit
+     * CUMULATIVE: Cumulative limit
+     */
+    type: string;
+
+    /**
+     * VALUE: Limited by value
+     * AMOUNT: Limited by token denomination amount
+     * COUNT: Limited by transaction count, only available for CUMULATIVE (cumulative limit)
+     */
+    limitBy?: string;
+
+    /**
+     * Limit range of limitBy in a format as: [min, max]，which means: min <= limitBy < max, where max is -1 means there's no maximum limit
+     */
+    range: Array<string>;
+
+    /**
+     * Hour-based limit time period of limitBy.This field is only returned when type is CUMULATIVE
+     */
+    timePeriod?: number;
+
+    /**
+     * Approval node. If the transaction is blocked by policy, as the transaction approval status is BLOCKED_BY_POLICY, there will be no approval nodes
+     */
+    approvalNodes?: Array<ApprovalNode>;
+}
+
+export interface ApprovalNode {
+    /**
+     * Approval threshold of the node
+     */
+    threshold: number;
+
+    /**
+     * Approval node name
+     */
+    name: string;
+
+    /**
+     * Current approval status of the approval node:
+     * PENDING_APPROVAL: Pending approval
+     * APPROVED: Approved
+     * REJECTED: Rejected
+     * CANCELLED: Approval cancelled. The following situations will result in the current approval node being in "Approval cancelled" status:
+     * 1. A member in the node cancel the transaction
+     * 2. A preceding approval node cancel or reject the approval, all subsequent nodes will automatically change to "Approval cancelled" status
+     * 3. The Connect recipient (if any) cancel or reject approval, all nodes will automatically change to "Approval cancelled" status
+     * 4. Transaction is cancelled before the approval completing, all nodes will automatically change to "Approval cancelled" status
+     */
+    approvalStatus: string;
+
+    /**
+     * Approval member
+     */
+    members: Array<Member>;
+}
+
+export interface Member {
+    /**
+     * Approver unique identifier
+     */
+    auditUserKey: string;
+
+    /**
+     * Approver name
+     */
+    auditUserName: string;
+
+    /**
+     * Whether the approver is API Co-Signer
+     */
+    isCoSigner: boolean;
+
+    /**
+     * Approval status of current approver:
+     * PENDING_APPROVAL: Pending approval
+     * APPROVED: Approved
+     * REJECTED: Rejected
+     * CANCELLED: Cancelled
+     */
+    approvalStatus: string;
 }
 
 export interface TransactionsFeeRateRequest {
@@ -1235,6 +1430,14 @@ export class TransactionApi {
      */
     async oneTransactions(request: OneTransactionsRequest): Promise<OneTransactionsResponse> {
         return await this.client.doRequest<OneTransactionsRequest, OneTransactionsResponse>('/v1/transactions/one', request);
+    }
+
+    /**
+     * Retrieve Transaction Approval Details
+     * Query approval details of a transaction. Exclusively for transactions using the new advanced transaction policy. Learn more about new advanced transaction policies.
+     */
+    async approvalDetailTransactions(request: ApprovalDetailTransactionsRequest): Promise<ApprovalDetailTransactionsResponse> {
+        return await this.client.doRequest<ApprovalDetailTransactionsRequest, ApprovalDetailTransactionsResponse>('/v1/transactions/approvalDetail', request);
     }
 
     /**
