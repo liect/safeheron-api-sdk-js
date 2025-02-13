@@ -17,8 +17,7 @@ const defaults = {
     PRIVATE_KEY_PEM_FILE: '',
     APIKEY_PUBLIC_KEY_PEM_FILE: '',
     BASE_URL: '',
-    ACCOUNT_KEY: '',
-    ACCOUNT_TOKEN_ADDRESS: '',
+    ACCOUNT_KEY: ''
 }
 
 const mpcDemoConfigRC = rc('mpcdemo', defaults)
