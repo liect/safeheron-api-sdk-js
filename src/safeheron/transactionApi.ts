@@ -711,6 +711,24 @@ export interface TxKeyResult {
     txKey: string;
 }
 
+
+export interface CreateTransactionV3Response {
+    /**
+     * Transaction key
+     */
+    txKey: string;
+
+    /**
+     * Merchant unique business ID for transaction creation
+     */
+    customerRefId: string;
+
+    /**
+     * With idempotentRequest set to true, the system enforces idempotency by returning the original txKey for duplicate customerRefIds, preventing redundant transaction creation
+     */
+    idempotentRequest: boolean;
+}
+
 export interface RecreateTransactionRequest {
     /**
      * Transaction key
@@ -1407,6 +1425,13 @@ export class TransactionApi {
      */
     async createTransactions(request: CreateTransactionRequest): Promise<TxKeyResult> {
         return await this.client.doRequest<CreateTransactionRequest, TxKeyResult>('/v2/transactions/create', request);
+    }
+
+    /**
+     * Create a new transaction V3.
+     */
+    async createTransactionsV3(request: CreateTransactionRequest): Promise<CreateTransactionV3Response> {
+        return await this.client.doRequest<CreateTransactionRequest, CreateTransactionV3Response>('/v3/transactions/create', request);
     }
 
     /**
