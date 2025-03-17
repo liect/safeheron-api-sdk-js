@@ -1,7 +1,12 @@
 import {SafeheronCoSignerConfig} from '../config';
 import {RSA} from '../utils/rsa';
 import {AES} from '../utils/aes';
-import {CoSignerCallBack, CoSignerResponse, CoSignerResponseWithNewCryptoType} from '../model/BaseModel';
+import {
+    CoSignerCallBack,
+    CoSignerCallBackV3,
+    CoSignerResponse,
+    CoSignerResponseWithNewCryptoType
+} from '../model/BaseModel';
 import crypto from "crypto";
 
 export class CoSignerConverter {
@@ -104,5 +109,15 @@ export class CoSignerConverter {
             callBackContent =this.aes.decrypt(data.bizContent, keyAndIv);
         }
         return callBackContent;
+    }
+
+    convertCoSignerCallBackV3(data: CoSignerCallBackV3) {
+        // Verify sign
+        const content = `bizContent=${data.bizContent}&timestamp=${data.timestamp}&version=${data.version}`;
+        const verifyRes = this.rsa.verifyPSS(content, data.sig);
+        if (!verifyRes) {
+            throw new Error('CoSignerCallBack signature verification failed');
+        }
+        return Buffer.from(data.bizContent, 'base64');
     }
 }

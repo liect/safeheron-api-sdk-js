@@ -76,4 +76,11 @@ export class RSA {
     // Encode to base64 format
     return validator.verify(this.publicKey, signature, 'base64');
   }
+
+  verifyPSS(data: string, signature: string): boolean {
+      // Sign data with your RSA private key
+      const verify = crypto.createVerify('RSA-SHA256');
+      verify.update(data);
+      return verify.verify({ key: this.publicKey, padding: crypto.constants.RSA_PKCS1_PSS_PADDING, saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST }, Buffer.from(signature, 'base64'));
+  }
 }
