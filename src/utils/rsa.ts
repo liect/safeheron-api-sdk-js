@@ -68,6 +68,16 @@ export class RSA {
     return signer.sign(this.privateKey, 'base64');
   }
 
+  signPSS(data: string): string {
+      const signer = crypto.createSign('RSA-SHA256');
+      signer.update(data);
+      return signer.sign({
+          key: this.privateKey,
+          padding: crypto.constants.RSA_PKCS1_PSS_PADDING, // crypto.constants.RSA_PKCS1_PSS_PADDING
+          saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST,
+      },'base64');
+  }
+
   verify(data: string, signature: string): boolean {
     // Sign data with your RSA private key
     const validator = crypto.createVerify('RSA-SHA256');

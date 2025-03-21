@@ -44,6 +44,15 @@ export interface CoSignerResponse {
   bizContent?: string;
 }
 
+export interface CoSignerResponseV3 {
+  code: string;
+  timestamp: string;
+  message: string;
+  version?: string;
+  sig?: string;
+  bizContent?: string;
+}
+
 export interface CoSignerResponseWithNewCryptoType {
   code: number;
   timestamp: string;

@@ -4,7 +4,7 @@ import {AES} from '../utils/aes';
 import {
     CoSignerCallBack,
     CoSignerCallBackV3,
-    CoSignerResponse,
+    CoSignerResponse, CoSignerResponseV3,
     CoSignerResponseWithNewCryptoType
 } from '../model/BaseModel';
 import crypto from "crypto";
@@ -82,6 +82,29 @@ export class CoSignerConverter {
         req.sig = this.rsa.sign(signSrc);
         req.rsaType = this.rsa.ECB_OAEP;
         req.aesType = this.aes.GCM;
+        return req;
+    }
+
+    convertV3CoSignerResponse(data: any): CoSignerResponseV3 {
+        const req: CoSignerResponseV3 = {
+            message: 'SUCCESS',
+            version: 'v3',
+            code: '200',
+            timestamp: String(new Date().getTime()),
+        };
+
+        if (data != null) {
+            req.bizContent = Buffer.from(JSON.stringify(data)).toString('base64');
+        }
+
+        // Sign the request data with your RSA private key
+        let paramStr = [];
+        let reqMap = new Map(Object.entries(req));
+        for (const key of Array.from(reqMap.keys()).slice().sort()) {
+            paramStr.push(key + "=" + reqMap.get(key))
+        }
+        const signSrc = paramStr.join("&");
+        req.sig = this.rsa.signPSS(signSrc);
         return req;
     }
 
