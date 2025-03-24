@@ -17,7 +17,9 @@ export class CoSignerConverter {
     constructor(config: SafeheronCoSignerConfig) {
         this.config = config;
         this.aes = new AES();
-        this.rsa = new RSA(config.coSignerPubKey, config.approvalCallbackServicePrivateKey);
+        //Supports both coSignerPubKey and apiPublKey
+        //Supports both approvalCallbackServicePrivateKey and bizPrivKey
+        this.rsa = new RSA(config.coSignerPubKey || config.apiPubKey || "", config.approvalCallbackServicePrivateKey || config.bizPrivKey || "");
     }
 
     // It has been Deprecated,Please use convertCoSignerResponseWithNewCryptoType
