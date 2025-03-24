@@ -8,8 +8,8 @@ export interface SafeheronConfig {
 
 
 export interface SafeheronCoSignerConfig {
-  bizPrivKey: string;
-  apiPubKey: string;
+  approvalCallbackServicePrivateKey: string;
+  coSignerPubKey: string;
 }
 
 export interface SafeheronWebHookConfig {
