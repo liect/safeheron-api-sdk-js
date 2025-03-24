@@ -28,11 +28,27 @@ export interface CoSignerCallBack {
   aesType?: string;
 }
 
+export interface CoSignerCallBackV3 {
+  bizContent: string;
+  version: string;
+  timestamp: string;
+  sig: string;
+}
+
 export interface CoSignerResponse {
   code: number;
   timestamp: string;
   message: string;
   key?: string;
+  sig?: string;
+  bizContent?: string;
+}
+
+export interface CoSignerResponseV3 {
+  code: string;
+  timestamp: string;
+  message: string;
+  version?: string;
   sig?: string;
   bizContent?: string;
 }

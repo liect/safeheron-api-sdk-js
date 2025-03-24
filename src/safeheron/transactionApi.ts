@@ -235,6 +235,21 @@ export interface TransactionsResponse {
     customerRefId: string;
 
     /**
+     * Transaction counter used to prevent double-spending and replay attacks. This field has a value when a transaction on an EVM-compatible public chain completes approval, or when a custom nonce is passed during transaction creation
+     */
+    nonce: string;
+
+    /**
+     * Represents the txKey of the replaced transaction, returned only during transaction acceleration. Please note that an accelerated transaction and the original transaction are two completely independent transactions and should not be confused or regarded as the same transaction
+     */
+    replacedTxKey: string;
+
+    /**
+     * Represents the customerRefId of the replaced transaction, returned only during transaction acceleration. Please note that an accelerated transaction and the original transaction are two completely independent transactions and should not be confused or regarded as the same transaction. (Note: This field has a value only for transactions accelerated after March 21, 2025.)
+     */
+    replacedCustomerRefId: string;
+
+    /**
      * Merchant extended field
      */
     customerExt1: string;
@@ -904,6 +919,21 @@ export interface OneTransactionsResponse {
      * Merchant unique business ID
      */
     customerRefId: string;
+
+    /**
+     * Transaction counter used to prevent double-spending and replay attacks. This field has a value when a transaction on an EVM-compatible public chain completes approval, or when a custom nonce is passed during transaction creation
+     */
+    nonce: string;
+
+    /**
+     * Represents the txKey of the replaced transaction, returned only during transaction acceleration. Please note that an accelerated transaction and the original transaction are two completely independent transactions and should not be confused or regarded as the same transaction
+     */
+    replacedTxKey: string;
+
+    /**
+     * Represents the customerRefId of the replaced transaction, returned only during transaction acceleration. Please note that an accelerated transaction and the original transaction are two completely independent transactions and should not be confused or regarded as the same transaction. (Note: This field has a value only for transactions accelerated after March 21, 2025.)
+     */
+    replacedCustomerRefId: string;
 
     /**
      * Merchant extended field
