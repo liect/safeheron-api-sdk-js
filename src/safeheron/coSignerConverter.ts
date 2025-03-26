@@ -3,7 +3,7 @@ import {RSA} from '../utils/rsa';
 import {AES} from '../utils/aes';
 import {
     CoSignerCallBack,
-    CoSignerCallBackV3,
+    CoSignerRequestV3,
     CoSignerResponse, CoSignerResponseV3,
     CoSignerResponseWithNewCryptoType
 } from '../model/BaseModel';
@@ -87,7 +87,7 @@ export class CoSignerConverter {
         return req;
     }
 
-    convertV3CoSignerResponse(data: any): CoSignerResponseV3 {
+    responseV3convert(data: any): CoSignerResponseV3 {
         const req: CoSignerResponseV3 = {
             message: 'SUCCESS',
             version: 'v3',
@@ -108,6 +108,16 @@ export class CoSignerConverter {
         const signSrc = paramStr.join("&");
         req.sig = this.rsa.signPSS(signSrc);
         return req;
+    }
+
+    requestV3convert(data: CoSignerRequestV3) {
+        // Verify sign
+        const content = `bizContent=${data.bizContent}&timestamp=${data.timestamp}&version=v3`;
+        const verifyRes = this.rsa.verifyPSS(content, data.sig);
+        if (!verifyRes) {
+            throw new Error('CoSignerCallBack signature verification failed');
+        }
+        return Buffer.from(data.bizContent, 'base64');
     }
 
     convertCoSignerCallBack(data: CoSignerCallBack) {
@@ -134,15 +144,5 @@ export class CoSignerConverter {
             callBackContent =this.aes.decrypt(data.bizContent, keyAndIv);
         }
         return callBackContent;
-    }
-
-    convertV3CoSignerCallBack(data: CoSignerCallBackV3) {
-        // Verify sign
-        const content = `bizContent=${data.bizContent}&timestamp=${data.timestamp}&version=${data.version}`;
-        const verifyRes = this.rsa.verifyPSS(content, data.sig);
-        if (!verifyRes) {
-            throw new Error('CoSignerCallBack signature verification failed');
-        }
-        return Buffer.from(data.bizContent, 'base64');
     }
 }

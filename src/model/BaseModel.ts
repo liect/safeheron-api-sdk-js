@@ -28,7 +28,7 @@ export interface CoSignerCallBack {
   aesType?: string;
 }
 
-export interface CoSignerCallBackV3 {
+export interface CoSignerRequestV3 {
   bizContent: string;
   version: string;
   timestamp: string;
