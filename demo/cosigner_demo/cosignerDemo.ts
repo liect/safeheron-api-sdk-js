@@ -19,28 +19,31 @@ function getConfigValue(key: string) {
     return value;
 }
 
-const bizPrivKey = readFileSync(path.resolve(getConfigValue('BIZ_PRIV_KEY_PEM_FILE')), 'utf8');
-const apiPubKey = readFileSync(path.resolve(getConfigValue('API_PUB_KEY_PEM_FILE')), 'utf8');
+const approvalCallbackServicePrivateKey = readFileSync(path.resolve(getConfigValue('APPROVAL_CALLBACK_SERVICE_PRIVATE_KEY_PEM_FILE')), 'utf8');
+const coSignerPubKey = readFileSync(path.resolve(getConfigValue('CO_SIGNER_PUB_KEY_PEM_FILE')), 'utf8');
 
 
 async function main() {
     try {
         const converter: CoSignerConverter = new CoSignerConverter({
-            bizPrivKey: bizPrivKey,
-            apiPubKey: apiPubKey,
+            approvalCallbackServicePrivateKey: approvalCallbackServicePrivateKey,
+            coSignerPubKey: coSignerPubKey,
         });
 
-        const coSignerCallBack = converter.convertCoSignerCallBack({
-            bizContent: 'AES-encrypted data of request parameters',
-            key: 'Encrypted data of random AES key by callback RSA public key',
-            timestamp: 'Callback timestamp',
-            sig: 'Signature data after signing request parameters by your API RSA private key'
+        //Visit the following link to view the request data specification：https://docs.safeheron.com/api/en.html#API%20Co-Signer%20Request%20Data
+        const coSignerCallBack = converter.requestV3convert({
+            bizContent: '<Approval request data>',
+            version: '<Interface request parameter protocol version>',
+            timestamp: '<Callback timestamp>',
+            sig: '<Request signature, which can be verified using the API Co-Signer public key>'
         })
         console.log(`Decrypt coSignerBizContent: ${coSignerCallBack}`);
 
-        const coSignerResponse=  converter.convertCoSignerResponseWithNewCryptoType({
-            approve: true,
-            txKey: 'TxKey that needs to be approved'
+        //Visit the following link to view the response data specification.：https://docs.safeheron.com/api/en.html#Approval%20Callback%20Service%20Response%20Data
+        const coSignerResponse=  converter.responseV3convert({
+            action: "<Replace with APPROVE or REJECT>",
+            //coSignerCallBack.approvalId
+            approvalId: '<Replace with the approvalId data from the request>'
         })
 
         //The customer returns encryptResponse after processing the business logic.
