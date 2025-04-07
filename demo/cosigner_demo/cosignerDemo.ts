@@ -32,10 +32,10 @@ async function main() {
 
         //Visit the following link to view the request data specification：https://docs.safeheron.com/api/en.html#API%20Co-Signer%20Request%20Data
         const coSignerCallBack = converter.requestV3convert({
-            bizContent: 'AES-encrypted data of request parameters',
-            version: 'Interface request parameter protocol version, currently fixed at "v3". Version number changes mean changes to the request data, and developers need to parse the request parameters according to the version',
-            timestamp: 'Callback timestamp',
-            sig: 'Signature data after signing request parameters by your API RSA private key'
+            bizContent: '<Approval request data>',
+            version: '<Interface request parameter protocol version>',
+            timestamp: '<Callback timestamp>',
+            sig: '<Request signature, which can be verified using the API Co-Signer public key>'
         })
         console.log(`Decrypt coSignerBizContent: ${coSignerCallBack}`);
 
