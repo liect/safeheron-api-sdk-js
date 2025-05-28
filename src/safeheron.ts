@@ -17,6 +17,11 @@ export class SafeheronClient {
             config.rsaPrivateKey = readFileSync(path.resolve(config.rsaPrivateKey.substring(5)), 'utf8');
         }
 
+        // Support base64 format private key.
+        if (!config.rsaPrivateKey.startsWith("-----BEGIN")){
+            config.rsaPrivateKey = ["-----BEGIN PRIVATE KEY-----", config.rsaPrivateKey, "-----END PRIVATE KEY-----"].join("\n")
+        }
+
         // support read from file.
         if(config.safeheronRsaPublicKey.startsWith("file:")){
             config.safeheronRsaPublicKey = readFileSync(path.resolve(config.safeheronRsaPublicKey.substring(5)), 'utf8');

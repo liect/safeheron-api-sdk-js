@@ -131,7 +131,7 @@ export interface AccountResponse {
 
 export interface CreateAccountRequest {
     /**
-     * Account name, within 30 characters
+     * Account name, 50 characters max
      */
     accountName?: string;
 
@@ -216,7 +216,7 @@ export interface CreateAccountResponse {
 
 export interface BatchCreateAccountRequest {
     /**
-     * The prefix of wallet account name, 30 characters max
+     * The prefix of wallet account name, 50 characters max
      */
     accountName?: string;
 

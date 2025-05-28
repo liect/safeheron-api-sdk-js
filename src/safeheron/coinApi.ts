@@ -290,8 +290,8 @@ export class CoinApi {
      * Snapshot the Coin Balance
      * Safeheron takes and stores daily snapshots of balances based on the transaction block's creation time in GMT+8. Please note that the snapshot only keeps data within 30 days.
      */
-    async coinBalanceSnapshot(request: CoinBalanceSnapshotRequest): Promise<CoinBalanceSnapshotResponse> {
-        return await this.client.doRequest<CoinBalanceSnapshotRequest, CoinBalanceSnapshotResponse>('/v1/coin/balance/snapshot', request);
+    async coinBalanceSnapshot(request: CoinBalanceSnapshotRequest): Promise<Array<CoinBalanceSnapshotResponse>> {
+        return await this.client.doRequest<CoinBalanceSnapshotRequest, Array<CoinBalanceSnapshotResponse>>('/v1/coin/balance/snapshot', request);
     }
 
     /**

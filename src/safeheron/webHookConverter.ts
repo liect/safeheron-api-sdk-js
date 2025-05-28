@@ -2,6 +2,8 @@ import { SafeheronWebHookConfig} from '../config';
 import {RSA} from '../utils/rsa';
 import {AES} from '../utils/aes';
 import {WebHook} from '../model/BaseModel';
+import {readFileSync} from "fs";
+import path from "path";
 
 export class WebHookConverter {
     config: SafeheronWebHookConfig;
@@ -9,6 +11,26 @@ export class WebHookConverter {
     aes: AES;
 
     constructor(config: SafeheronWebHookConfig) {
+        // support read from file.
+        if(config.webHookRsaPrivateKey.startsWith("file:")){
+            config.webHookRsaPrivateKey = readFileSync(path.resolve(config.webHookRsaPrivateKey.substring(5)), 'utf8');
+        }
+
+        // Support base64 format private key.
+        if (!config.webHookRsaPrivateKey.startsWith("-----BEGIN")){
+            config.webHookRsaPrivateKey = ["-----BEGIN PRIVATE KEY-----", config.webHookRsaPrivateKey, "-----END PRIVATE KEY-----"].join("\n")
+        }
+
+        // support read from file.
+        if(config.safeheronWebHookRsaPublicKey.startsWith("file:")){
+            config.safeheronWebHookRsaPublicKey = readFileSync(path.resolve(config.safeheronWebHookRsaPublicKey.substring(5)), 'utf8');
+        }
+
+        // support direct copy from safeheron web console.
+        if (!config.safeheronWebHookRsaPublicKey.startsWith("-----BEGIN")){
+            config.safeheronWebHookRsaPublicKey = ["-----BEGIN PUBLIC KEY-----", config.safeheronWebHookRsaPublicKey, "-----END PUBLIC KEY-----"].join("\n")
+        }
+
         this.config = config;
         this.aes = new AES();
         this.rsa = new RSA(config.safeheronWebHookRsaPublicKey, config.webHookRsaPrivateKey);

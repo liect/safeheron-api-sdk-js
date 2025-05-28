@@ -7,7 +7,7 @@ import {ResultResponse} from "./accountApi";
 export interface CreateWeb3AccountRequest {
 
     /**
-     * Account name, within 30 characters
+     * Account name, 50 characters max
      */
     accountName?: string;
 
@@ -82,7 +82,7 @@ export interface Web3AccountResponse {
 
 export interface BatchCreateWeb3AccountRequest {
     /**
-     * The prefix of wallet account name, 30 characters max
+     * The prefix of wallet account name, 50 characters max
      */
     accountName?: string;
 
@@ -91,6 +91,13 @@ export interface BatchCreateWeb3AccountRequest {
      */
     count: number;
 
+    /**
+     *    Whether display in Safeheron Console
+     * True: not display
+     * False: display
+     * Default: false
+     */
+    hiddenOnUI?: boolean;
 }
 
 export interface BatchCreateWeb3AccountResponse {
