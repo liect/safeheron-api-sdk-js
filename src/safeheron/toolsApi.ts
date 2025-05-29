@@ -153,8 +153,8 @@ export class ToolsApi {
     /**
      * Create AML Risk Assessment Request
      */
-    async amlCheckerRequest(request: AmlCheckerRequestRequest): Promise<Array<AmlCheckerRequestResponse>> {
-        return await this.client.doRequest<AmlCheckerRequestRequest, Array<AmlCheckerRequestResponse>>('/v1/tools/aml-checker/request', request);
+    async amlCheckerRequest(request: AmlCheckerRequestRequest): Promise<AmlCheckerRequestResponse> {
+        return await this.client.doRequest<AmlCheckerRequestRequest, AmlCheckerRequestResponse>('/v1/tools/aml-checker/request', request);
     }
 
     /**
