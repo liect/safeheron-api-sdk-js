@@ -131,7 +131,7 @@ export interface AccountResponse {
 
 export interface CreateAccountRequest {
     /**
-     * Account name, within 30 characters
+     * Account name, 50 characters max
      */
     accountName?: string;
 
@@ -216,7 +216,7 @@ export interface CreateAccountResponse {
 
 export interface BatchCreateAccountRequest {
     /**
-     * The prefix of wallet account name, 30 characters max
+     * The prefix of wallet account name, 50 characters max
      */
     accountName?: string;
 
@@ -611,6 +611,30 @@ export interface InfoAccountCoinAddressResponse {
     accountKey: string;
 }
 
+export interface AccountCoinBalanceRequest {
+    /**
+     * Coin Keys, max 10
+     */
+    coinKeyList: Array<string>;
+}
+
+export interface AccountCoinBalanceResponse {
+    /**
+     * Coin balances
+     */
+    balanceList: Array<{
+        /**
+         * Coin key
+         */
+        coinKey: string;
+
+        /**
+         * Total coin balance across all asset wallets (in coin units)
+         */
+        balance: string;
+    }>;
+}
+
 export interface RenameAccountCoinAddressRequest {
     /**
      * Address group key
@@ -868,6 +892,14 @@ export class AccountApi {
      */
     async infoAccountCoinAddress(request: InfoAccountCoinAddressRequest): Promise<InfoAccountCoinAddressResponse> {
         return await this.client.doRequest<InfoAccountCoinAddressRequest, InfoAccountCoinAddressResponse>('/v1/account/coin/address/info', request);
+    }
+
+    /**
+     * Retrieve Coin Balance
+     * Get the coin balance of all asset wallets under the team.
+     */
+    async accountCoinBalance(request: AccountCoinBalanceRequest): Promise<AccountCoinBalanceResponse> {
+        return await this.client.doRequest<AccountCoinBalanceRequest, AccountCoinBalanceResponse>('/v1/account/coin/balance', request);
     }
 
     /**
