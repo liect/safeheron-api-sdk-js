@@ -108,22 +108,31 @@ export interface MistTrack {
 export interface RiskDetail {
     /**
      * Risk type:
-     * Malicious
-     * Suspected Malicious
-     * High Risk
-     * Medium Risk
+     * sanctioned_entity
+     * illicit_activity
+     * mixer
+     * gambling
+     * risk_exchange
+     * bridge
      */
-    type: string;
+     riskType: string;
 
     /**
-     * Risk label
+     * The name of the entity involved in the risk, example: garantex.io
      */
-    label: string;
+     entity: string;
 
     /**
-     * Wallet address
+     * How many hops to the risk entity, greater than or equal to 1
      */
-    address: string;
+     hopNum: string;
+
+    /**
+     * Risk exposure type:
+     * direct
+     * indirect
+     */
+     exposureType: string;
 
     /**
      * Transaction amount (USD)
